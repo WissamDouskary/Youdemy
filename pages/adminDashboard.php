@@ -1,151 +1,115 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-const AdminDashboard = () => {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
-      <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <span className="text-2xl font-bold text-purple-600">YouDemy</span>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>YouDemy - Admin Dashboard</title>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-purple-600">YouDemy</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-600">Admin Panel</span>
+                    <button class="text-gray-600 hover:text-gray-900">Logout</button>
+                </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600">Admin Panel</span>
-              <button className="text-gray-600 hover:text-gray-900">Logout</button>
-            </div>
-          </div>
         </div>
-      </nav>
+    </nav>
 
-      {/* Main Content */}
-      <div className="p-8 max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold mb-8">Statistics Overview</h1>
+    <!-- Main Content -->
+    <div class="p-8 max-w-7xl mx-auto">
+        <h1 class="text-2xl font-bold mb-8">Statistics Overview</h1>
         
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-500">Total Users</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold">15,234</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-500">Total Courses</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold">456</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-500">Total Revenue</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold">$123,456</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-gray-500">Active Instructors</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold">89</p>
-            </CardContent>
-          </Card>
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+                <h3 class="text-gray-500 text-sm mb-1">Total Users</h3>
+                <p class="text-3xl font-bold">15,234</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+                <h3 class="text-gray-500 text-sm mb-1">Total Courses</h3>
+                <p class="text-3xl font-bold">456</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+                <h3 class="text-gray-500 text-sm mb-1">Total Revenue</h3>
+                <p class="text-3xl font-bold">$123,456</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+                <h3 class="text-gray-500 text-sm mb-1">Active Instructors</h3>
+                <p class="text-3xl font-bold">89</p>
+            </div>
         </div>
 
-        {/* Recent Users Table */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Recent Users</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="text-left text-gray-500">
-                    <th className="pb-4">User</th>
-                    <th className="pb-4">Role</th>
-                    <th className="pb-4">Joined</th>
-                    <th className="pb-4">Status</th>
-                    <th className="pb-4">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b">
-                    <td className="py-4">John Smith</td>
-                    <td>Student</td>
-                    <td>2 hours ago</td>
-                    <td>
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">
-                        Active
-                      </span>
-                    </td>
-                    <td>
-                      <button className="text-blue-600 hover:text-blue-800">Edit</button>
-                    </td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="py-4">Sarah Johnson</td>
-                    <td>Instructor</td>
-                    <td>1 day ago</td>
-                    <td>
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">
-                        Active
-                      </span>
-                    </td>
-                    <td>
-                      <button className="text-blue-600 hover:text-blue-800">Edit</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+        <!-- Recent Users -->
+        <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+            <h2 class="text-xl font-bold mb-4">Recent Users</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-left text-gray-500">
+                            <th class="pb-4">User</th>
+                            <th class="pb-4">Role</th>
+                            <th class="pb-4">Joined</th>
+                            <th class="pb-4">Status</th>
+                            <th class="pb-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b">
+                            <td class="py-4">John Smith</td>
+                            <td>Student</td>
+                            <td>2 hours ago</td>
+                            <td><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">Active</span></td>
+                            <td>
+                                <button class="text-blue-600 hover:text-blue-800">Edit</button>
+                            </td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-4">Sarah Johnson</td>
+                            <td>Instructor</td>
+                            <td>1 day ago</td>
+                            <td><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">Active</span></td>
+                            <td>
+                                <button class="text-blue-600 hover:text-blue-800">Edit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-          </CardContent>
-        </Card>
+        </div>
 
-        {/* Recent Reports */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Reports</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b pb-4">
-                <div>
-                  <p className="font-semibold">Content Report</p>
-                  <p className="text-gray-500">Report on "JavaScript Basics" course</p>
+        <!-- Recent Reports -->
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h2 class="text-xl font-bold mb-4">Recent Reports</h2>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between border-b pb-4">
+                    <div>
+                        <p class="font-semibold">Content Report</p>
+                        <p class="text-gray-500">Report on "JavaScript Basics" course</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="bg-red-100 text-red-600 px-3 py-1 rounded-md">Review</button>
+                        <span class="text-gray-400">2 hours ago</span>
+                    </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <button className="bg-red-100 text-red-600 px-3 py-1 rounded-md">
-                    Review
-                  </button>
-                  <span className="text-gray-400">2 hours ago</span>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-semibold">Payment Issue</p>
+                        <p class="text-gray-500">Failed payment for course enrollment</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-md">Pending</button>
+                        <span class="text-gray-400">5 hours ago</span>
+                    </div>
                 </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold">Payment Issue</p>
-                  <p className="text-gray-500">Failed payment for course enrollment</p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button className="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-md">
-                    Pending
-                  </button>
-                  <span className="text-gray-400">5 hours ago</span>
-                </div>
-              </div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+        </div>
     </div>
-  );
-};
-
-export default AdminDashboard;
+</body>
+</html>
