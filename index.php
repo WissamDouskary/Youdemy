@@ -20,7 +20,8 @@
                     <a href="../Youdemy/pages/cours.php"><li>Cours</li></a>
                 </ul>
                 <div class="flex items-center space-x-4">
-                <button class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">Autentification</button>
+                <a href="./pages/login.php"><button class=" text-purple-700 px-4 py-2 rounded-md">Login</button></a>
+                <a href="./pages/sign_up.php"><button class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">sign up</button></a>
                 </div>
             </div>
         </div>

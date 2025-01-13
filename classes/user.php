@@ -19,6 +19,8 @@ abstract class User {
         // $this->hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
     abstract public function insertUser();
+
+    abstract static function signup($nom, $prenom, $email, $role, $password);
 }
 
 
