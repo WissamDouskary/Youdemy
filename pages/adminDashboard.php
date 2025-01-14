@@ -1,9 +1,20 @@
+<?php
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
+if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 1) {
+    header('Location: ../index.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>YouDemy - Admin Dashboard</title>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -16,11 +27,33 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <span class="text-gray-600">Admin Panel</span>
-                    <button class="text-gray-600 hover:text-gray-900">Logout</button>
+                    <a href="../Handling/AuthHandl.php"><button class="text-gray-600 hover:text-gray-900">Logout</button></a>
                 </div>
             </div>
         </div>
     </nav>
+
+    <?php
+
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    $type = $message['type'];
+    $text = $message['text'];
+
+    echo "
+        <script>
+            Swal.fire({
+                icon: '$type',
+                title: '$type',
+                text: '$text',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    ";
+
+    unset($_SESSION['message']);
+}
+?>
 
     <!-- Main Content -->
     <div class="p-8 max-w-7xl mx-auto">

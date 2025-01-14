@@ -1,10 +1,12 @@
 <?php
-if(session_status() === PHP_SESSION_NONE){
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once '../classes/role.php';
 
-if(empty($_SESSION)){
+if (!empty($_SESSION)) {
+    header('Location: ../index.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,6 +15,7 @@ if(empty($_SESSION)){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
@@ -64,14 +67,28 @@ if(empty($_SESSION)){
                     <a href="../pages/sign_up.php" class="font-medium text-purpel-600 hover:text-purpel-500">Create an account</a>
                 </div>
             </form>
+            <?php
+
+    if (isset($_SESSION['message'])) {
+        $message = $_SESSION['message'];
+        $type = $message['type'];
+        $text = $message['text'];
+
+        echo "
+            <script>
+                Swal.fire({
+                    icon: '$type',
+                    title: '$type',
+                    text: '$text',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        ";
+
+        unset($_SESSION['message']);
+    }
+    ?>
         </div>
     </main>
 </body>
 </html>
-<?php 
-} else {
-header('Location: ../index.php');
-exit();
-}
-
-?>

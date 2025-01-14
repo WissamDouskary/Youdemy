@@ -25,6 +25,7 @@ class User {
     public function getPrenom() { return $this->prenom; }
     public function getEmail() { return $this->email; }
     public function getStatus() { return $this->status; }
+    public function getrole() { return $this->role; }
 
 
     private function hashPass($password){
