@@ -7,7 +7,6 @@ abstract class User {
     protected $prenom;
     protected $email;
     protected $role;
-    protected $status;
     protected $hashedPassword;
 
 
