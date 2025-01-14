@@ -2,6 +2,8 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
+if (!isset($_SESSION['user_role']) || ($_SESSION['user_role'] !== 1 && $_SESSION['user_role'] !== 2)) {
+
 ?>
 
 <!DOCTYPE html>
@@ -10,6 +12,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <title>LearnHub - Online Courses</title>
 </head>
@@ -56,6 +59,28 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
         </div>
     </div>
 </nav>
+
+<?php
+
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    $type = $message['type'];
+    $text = $message['text'];
+
+    echo "
+        <script>
+            Swal.fire({
+                icon: '$type',
+                title: '$type',
+                text: '$text',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    ";
+
+    unset($_SESSION['message']);
+}
+?>
 
     <!-- Hero Section -->
     <div class="bg-purple-900 text-white py-16">
@@ -190,3 +215,12 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     </footer>
 </body>
 </html>
+<?php
+} else if ($_SESSION['user_role'] == 1) {
+    header('Location: ../Youdemy/pages/adminDashboard.php');
+    exit();
+} else if ($_SESSION['user_role'] == 2) {
+    header('Location: ../Youdemy/pages/prof_dashboard.php');
+    exit();
+}
+?>

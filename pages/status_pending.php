@@ -73,12 +73,10 @@
             </div>
 
             <div class="mt-8">
-                <form action="../includes/logout.php" method="POST" class="inline-block">
-                    <button type="submit" name="logout" 
-                            class="bg-gray-100 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-200 transition-colors duration-200">
-                        Logout
-                    </button>
-                </form>
+                <a href="../Handling/AuthHandl.php"><button type="submit" name="logout"
+                        class="bg-gray-100 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-200 transition-colors duration-200">
+                    Logout
+                </button></a>
             </div>
         </div>
     </div>
