@@ -3,6 +3,7 @@ if(session_status() === PHP_SESSION_NONE){
     session_start();
 }
 require_once '../classes/role.php';
+if(empty($_SESSION)){
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,3 +87,9 @@ require_once '../classes/role.php';
     </main>
 </body>
 </html>
+<?php
+} else {
+header('Location: ../index.php');
+exit();
+}
+?>

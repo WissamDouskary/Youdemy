@@ -1,3 +1,8 @@
+<?php
+if(session_status() === PHP_SESSION_NONE){
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,22 +14,46 @@
 <body class="bg-gray-50">
     <!-- Navigation -->
     <nav class="bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <span class="text-2xl font-bold text-purple-600">YouDemy</span>
-                </div>
-                <ul class="flex gap-9">
-                    <a href="../index.php"><li>Home</li></a>
-                    <a href="../pages/cours.php"><li>Cours</li></a>
-                </ul>
-                <div class="flex items-center space-x-4">
-                <a href="../pages/login.php"><button class=" text-purple-700 px-4 py-2 rounded-md">Login</button></a>
-                <a href="../pages/sign_up.php"><button class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">sign up</button></a>
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <span class="text-2xl font-bold text-purple-600">YouDemy</span>
+            </div>
+            <!-- Navigation Links -->
+            <ul class="flex gap-9">
+                <a href="../index.php"><li>Home</li></a>
+                <a href="../pages/cours.php"><li>Courses</li></a>
+            </ul>
+            
+            <?php if (!isset($_SESSION['user_role'])): ?>
+            <div class="flex items-center space-x-4">
+                <a href="../pages/login.php">
+                    <button class="text-purple-700 px-4 py-2 rounded-md">Login</button>
+                </a>
+                <a href="../pages/sign_up.php">
+                    <button class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">Sign Up</button>
+                </a>
+            </div>
+            <?php else: ?>
+            <div class="flex items-center space-x-4 relative group">
+                <div class="cursor-pointer">
+                    <img src="../imgs/profilephoto.png" alt="Profile Photo" class="h-7">
+                    <!-- Dropdown Menu -->
+                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 invisible opacity-0 
+                                group-hover:visible group-hover:opacity-100 transition-all duration-300 ease-in-out 
+                                transform group-hover:translate-y-0 translate-y-1">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50">Profile</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50">Settings</a>
+                        <div class="border-t border-gray-100"></div>
+                        <a href="./logout.php" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logout</a>
+                    </div>
                 </div>
             </div>
+            <?php endif; ?>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 py-8">
