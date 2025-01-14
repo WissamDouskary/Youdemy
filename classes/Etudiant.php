@@ -42,9 +42,10 @@ class Etudiant extends User{
 
                 $stmt->execute();
             } else {
-                $sql = "INSERT INTO users (nom, prenom, email, password, role)
-                        VALUES :nom, :prenom, :email, :password, :role";                
+                $sql = "INSERT INTO users (nom, prenom, email, password, role_id, status)
+                        VALUES (:nom, :prenom, :email, :password, :role, 'waiting')";                
                 $stmt = $db->prepare($sql);
+
                 $stmt->bindParam(':nom', $this->nom);
                 $stmt->bindParam(':prenom', $this->prenom);
                 $stmt->bindParam(':email', $this->email);
@@ -59,7 +60,7 @@ class Etudiant extends User{
             return $this->id;
         }
         catch(PDOException $e){
-            throw new Exception('you have err in insert or update user data' . $e);
+            throw new Exception('you have err in insert or update user data' . $e->getMessage());
         }
     }
 
@@ -79,9 +80,9 @@ class Etudiant extends User{
                 $result['nom'],
                 $result['prenom'],
                 $result['email'],
-                $result['role'],
-                $result['status'],
-                $result['password']
+                $result['role_id'],
+                $result['password'],
+                $result['status']
             );
         }
 
@@ -104,6 +105,25 @@ class Etudiant extends User{
         $etudiant->hashPass($password);
         $etudiant->insertUser();
     }
+
+    public static function signin($email, $password) {
+        $user = self::findByEmail($email);
+
+
+        if (!$user || !password_verify($password, $user->hashedPassword)) {
+            throw new Exception("Invalid email or password");
+        }
+
+        session_start();
+        $_SESSION['user_id'] = $user->getId();
+        $_SESSION['user_nom'] = $user->getNom();
+        $_SESSION['user_prenom'] = $user->getPrenom();
+        $_SESSION['user_email'] = $user->getEmail();
+        $_SESSION['user_role'] = $user->role;
+
+        return $user;
+    }
+
 }
 
 ?>

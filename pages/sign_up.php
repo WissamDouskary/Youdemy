@@ -40,7 +40,7 @@ require_once '../classes/role.php';
                 <p class="mt-2 text-gray-600">Join us</p>
             </div>
             
-            <form class="mt-8 space-y-6 bg-white p-8 rounded-lg shadow" method="POST">
+            <form class="mt-8 space-y-6 bg-white p-8 rounded-lg shadow" method="POST" action="../Handling/AuthHandl.php">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">First Name</label>
@@ -73,7 +73,7 @@ require_once '../classes/role.php';
                     <input name="password" type="password" required class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none">
                 </div>
 
-                <button type="submit" class="w-full bg-primary py-2 px-4 border border-transparent rounded-md text-sm font-medium btn-hover focus:outline-none bg-purple-600 hover:bg-purple-700">
+                <button name="Createacc"  type="submit" class="w-full bg-primary py-2 px-4 border border-transparent rounded-md text-sm font-medium btn-hover focus:outline-none bg-purple-600 hover:bg-purple-700">
                     Create Account
                 </button>
 

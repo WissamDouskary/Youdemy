@@ -25,10 +25,12 @@ require_once '../classes/role.php';
                     <a href="../index.php"><li>Home</li></a>
                     <a href="../pages/cours.php"><li>Cours</li></a>
                 </ul>
+                
                 <div class="flex items-center space-x-4">
                 <a href="../pages/login.php"><button class="text-purple-700 px-4 py-2 rounded-md">Login</button></a>
                 <a href="../pages/sign_up.php"><button class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">sign up</button></a>
                 </div>
+                
             </div>
         </div>
     </nav>
@@ -40,7 +42,7 @@ require_once '../classes/role.php';
                 <p class="mt-2 text-gray-600">Please login to your account</p>
             </div>
             
-            <form class="mt-8 space-y-6 bg-white p-8 rounded-lg shadow" method="POST">
+            <form class="mt-8 space-y-6 bg-white p-8 rounded-lg shadow" method="post" action="../Handling/AuthHandl.php">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Email</label>
                     <input type="email" name="email" required class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
@@ -51,8 +53,8 @@ require_once '../classes/role.php';
                     <input type="password" name="password" required class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                 </div>
 
-                <button type="submit" class="w-full bg-primary py-2 px-4 border border-transparent rounded-md text-sm font-medium btn-hover focus:outline-none bg-purple-600 hover:bg-purple-700">
-                    Sign In
+                <button type="submit" name="signinsubmit" class="w-full bg-primary py-2 px-4 border border-transparent rounded-md text-sm font-medium btn-hover focus:outline-none bg-purple-600 hover:bg-purple-700">
+                    Log In
                 </button>
 
                 <div class="text-center text-sm text-gray-600">
