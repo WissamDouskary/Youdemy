@@ -1,5 +1,6 @@
 <?php
 require_once '../classes/admin.php';
+require_once '../classes/category.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
@@ -18,6 +19,21 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 1) {
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>YouDemy - Admin Dashboard</title>
+    <style>
+        .bg-primary { background-color: #7b39ed; }
+        .modal.active {
+            display: flex;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+    </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
     <!-- Navigation -->
@@ -80,6 +96,54 @@ if (isset($_SESSION['message'])) {
                 <p class="text-3xl font-bold">89</p>
             </div>
         </div>
+
+        <div class="mb-6 flex space-x-4">
+            <button onclick="openModal('addCategoryModal')" class="bg-primary px-4 py-2 rounded-lg hover:bg-purpel-500 flex items-center text-white">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Add Category
+            </button>
+        </div>
+
+        <!-- Category Table -->
+<!-- Category Table -->
+<div class="bg-white rounded-lg shadow-md mt-6 mb-6">
+    <div class="p-6 border-b border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-800">Categories Management</h2>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <?php
+                $rows = Category::showCategories();
+                 foreach($rows as $row) { 
+                ?>
+                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                    <td class="px-6 py-4 text-sm text-gray-900 pr-28"><?php echo $row['category_id'] ?></td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-medium text-gray-900 pr-20"><?php echo $row['name'] ?></span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center space-x-6">
+                            <button class="text-green-600 hover:text-green-800 transition-colors duration-200">Edit</button>
+                            <button class="text-red-600 hover:text-red-800 transition-colors duration-200">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 
         <!-- Recent Users -->
         <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
@@ -157,5 +221,34 @@ if (isset($_SESSION['message'])) {
             </div>
         </div>
     </div>
+
+        <!-- Add Category Modal -->
+        <div id="addCategoryModal" class="modal z-50">
+        <div class="bg-white rounded-lg w-1/3 mx-auto my-auto p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Add New Category</h3>
+                <button onclick="closeModal('addCategoryModal')" class="text-gray-500 hover:text-gray-700">×</button>
+            </div>
+            <form class="space-y-4" method="POST" action="../Handling/categoryHandl.php">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Category Name</label>
+                    <input type="text" name="cat_name" class="w-full border rounded-lg p-2">
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button" onclick="closeModal('addCategoryModal')" class="px-4 py-2 border rounded-lg">Cancel</button>
+                    <button type="submit" name="Category_submit" class="px-4 py-2 text-white bg-primary rounded-lg">Add Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+    </script>
 </body>
 </html>
