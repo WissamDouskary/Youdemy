@@ -26,7 +26,7 @@ if(isset($_POST['CreateCourseSub'])){
         $videoPath = $uploadDir . basename($videoFile['name']);
         
         if (move_uploaded_file($videoFile['tmp_name'], $videoPath)) {
-            $course = new VideoCours($course_title, $course_description, $videoPath, $tags, $course_price, $categories_select, $_SESSION['user_id']);
+            $course = new VideoCours($course_title, $course_description, $videoPath, $course_price, $categories_select, $_SESSION['user_id']);
             try {
                 $course->ajouterCours();
                 
@@ -53,14 +53,36 @@ if(isset($_POST['CreateCourseSub'])){
             exit();
         }
     }
-} else {
-    $_SESSION['message'] = [
-        'type' => 'error',
-        'text' => 'Invalid course type. Video upload is required.'
-    ];
-    header('Location: ../profdashboard/createCours.php');
-    exit();
-}
+
+    } else if ($course_type === 'document') {
+        $content = $_POST['document_content'];
+        try{
+        $course = new DocumentCours($course_title, $course_description, $content, $course_price, $categories_select, $_SESSION['user_id']);
+        $course->ajouterCours();
+
+        $_SESSION['message'] = [
+            'type' => 'success',
+            'text' => "Course created successfully!"
+        ];
+        header('Location: ../profdashboard/createCours.php');
+        exit();
+        }
+        catch(Exception $e){
+            $_SESSION['message'] = [
+                'type' => 'error',
+                'text' => $e->getMessage()
+            ];
+            header('Location: ../profdashboard/createCours.php');
+            exit();
+        }
+    } else {
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'Invalid course type. Video upload is required.'
+        ];
+        header('Location: ../profdashboard/createCours.php');
+        exit();
+    }
 }
 
 
