@@ -1,0 +1,76 @@
+<?php 
+require_once '../classes/conn.php';
+
+abstract class Cours {
+    protected $title;
+    protected $description;
+    protected $tags;
+    protected $price;
+    protected $category_id;
+    protected $teacher_id;
+
+    public function __construct($title, $description, $tags, $price, $category_id, $teacher_id) {
+        $this->title = $title;
+        $this->description = $description;
+        $this->tags = $tags;
+        $this->price = $price;
+        $this->category_id = $category_id;
+        $this->teacher_id = $teacher_id;
+    }
+
+    abstract public function ajouterCours();
+
+    static abstract public function afficherCours();
+}
+
+class VideoCours extends Cours {
+    private $videoUrl;
+
+    public function __construct($title, $description, $videoUrl, $tags, $price, $category_id, $teacher_id) {
+        parent::__construct($title, $description, $tags, $price, $category_id, $teacher_id);
+        $this->videoUrl = $videoUrl;
+    }
+
+    public function ajouterCours() {
+        $db = Dbconnection::getInstance()->getConnection();
+
+        try{
+            $sql = "INSERT INTO courses (title, description, video_url, price, category_id, teacher_id)
+                    VALUES (:title, :description, :video_url, :price, :category_id, :teacher_id)";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':title', $this->title);
+            $stmt->bindParam(':description', $this->description);
+            $stmt->bindParam(':video_url', $this->videoUrl);
+            $stmt->bindParam(':price', $this->price);
+            $stmt->bindParam(':category_id', $this->category_id);
+            $stmt->bindParam(':teacher_id', $this->teacher_id);
+
+            $stmt->execute();
+        }
+        catch(PDOException $e){
+            throw new Exception("There is an error while create Course");
+        }
+    }
+
+    static public function afficherCours() {
+        
+    }
+}
+
+class DocumentCours extends Cours {
+    private $documentPath;
+
+    public function __construct($title, $description, $documentPath, $tags) {
+        parent::__construct($title, $description, $tags);
+        $this->documentPath = $documentPath;
+    }
+
+    public function ajouterCours() {
+
+    }
+
+    static public function afficherCours() {
+        
+    }
+}
+?>

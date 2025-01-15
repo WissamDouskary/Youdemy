@@ -25,7 +25,7 @@ try{
 } catch (Exception $e) {
         $_SESSION['message'] = [
             'type' => 'error',
-            'text' => 'An unexpected error occurred. Please try again.'
+            'text' => $e->getMessage()
         ];
         header('Location: ../pages/sign_up.php');
         exit();

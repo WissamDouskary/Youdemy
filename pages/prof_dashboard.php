@@ -7,6 +7,11 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 2) {
     header('Location: ../index.php');
     exit();
 }
+
+if ($_SESSION['user_status'] === 'waiting') {
+    header("Location: ../pages/status_pending.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,14 +32,14 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 2) {
                     <span class="text-2xl font-bold text-purple-600">YouDemy</span>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <span class="text-gray-600">Welcome, Professor Smith</span>
+                    <span class="text-gray-600">Welcome, <?php echo $_SESSION['user_nom'] . " " . $_SESSION['user_prenom'] ?></span>
                     <a href="../Handling/AuthHandl.php"><button class="text-gray-600 hover:text-gray-900">Logout</button></a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <?php
+<?php
 
 if (isset($_SESSION['message'])) {
     $message = $_SESSION['message'];

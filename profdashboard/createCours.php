@@ -1,10 +1,38 @@
+<?php
+require_once '../classes/category.php';
+
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
+if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 2) {
+    header('Location: ../index.php');
+    exit();
+}
+
+if ($_SESSION['user_status'] === 'waiting') {
+    header("Location: ../pages/status_pending.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" integrity="sha512-9UR1ynHntZdqHnwXKTaOm1s6V9fExqejKvg5XMawEMToW4sSw+3jtLrYfZPijvnwnnE8Uol1O9BcAskoxgec+g==" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>YouDemy - Create Course</title>
+    <style>
+        .bootstrap-tagsinput .tag {
+            background: red;
+            padding: 4px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
     <!-- Navigation -->
@@ -15,12 +43,34 @@
                     <span class="text-2xl font-bold text-purple-600">YouDemy</span>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <span class="text-gray-600">Professor Smith</span>
+                    <span class="text-gray-600"><?php echo $_SESSION['user_nom'] . " " . $_SESSION['user_prenom'] ?></span>
                     <a href="../Handling/AuthHandl.php"><button class="text-gray-600 hover:text-gray-900">Logout</button></a>
                 </div>
             </div>
         </div>
     </nav>
+
+<?php
+
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    $type = $message['type'];
+    $text = $message['text'];
+
+    echo "
+        <script>
+            Swal.fire({
+                icon: '$type',
+                title: '$type',
+                text: '$text',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    ";
+
+    unset($_SESSION['message']);
+}
+?>
 
     <div class="flex">
         <!-- Sidebar -->
@@ -39,27 +89,33 @@
             <div class="max-w-4xl mx-auto">
                 <h1 class="text-2xl font-bold mb-8">Create New Course</h1>
 
-                <form class="space-y-8">
+                <form class="space-y-8" method="post" action="../Handling/courseHandl.php" enctype="multipart/form-data">
                     <!-- Basic Information -->
                     <div class="bg-white p-6 rounded-lg shadow-sm">
                         <h2 class="text-xl font-semibold mb-6">Basic Information</h2>
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Course Title</label>
-                                <input type="text" class="w-full p-2 border rounded-md" placeholder="Enter course title"/>
+                                <input type="text" name="course_title" class="w-full p-2 border rounded-md" placeholder="Enter course title"/>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Course Description</label>
-                                <textarea class="w-full p-2 border rounded-md h-32" placeholder="Enter course description"></textarea>
+                                <textarea name="course_description" class="w-full p-2 border rounded-md h-32" placeholder="Enter course description"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                                <input name="tags" id="tagsInput" type="text" class="w-full p-2 border rounded-md" placeholder="Enter course Tags"/>
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                                    <select class="w-full p-2 border rounded-md">
-                                        <option>Programming</option>
-                                        <option>Business</option>
-                                        <option>Design</option>
-                                        <option>Marketing</option>
+                                    <select class="w-full p-2 border rounded-md" name="categories_select">
+                                        <?php
+                                        $rows = Category::showCategories();
+                                        foreach($rows as $row){ ?>
+                                        <option value="<?php echo $row['category_id'] ?>"><?php echo $row['name'] ?></option>
+                                        <?php } ?>
+                                        
                                     </select>
                                 </div>
                                 <div>
@@ -95,7 +151,7 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Price ($)</label>
-                                    <input type="number" class="w-full p-2 border rounded-md" placeholder="Enter price"/>
+                                    <input type="number" name="course_price" class="w-full p-2 border rounded-md" placeholder="Enter price"/>
                                 </div>
                             </div>
                         </div>
@@ -103,10 +159,7 @@
 
                     <!-- Submit Buttons -->
                     <div class="flex justify-end space-x-4">
-                        <button class="bg-gray-200 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-300">
-                            Save Draft
-                        </button>
-                        <button class="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700">
+                        <button type="submit" name="CreateCourseSub" class="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700">
                             Publish Course
                         </button>
                     </div>
@@ -128,6 +181,11 @@
     }
 
     window.onload = toggleFields;
+
+  $(document).ready(function () {
+
+    $('#tagsInput').tagsinput();
+  });
 </script>
 </body>
 </html>
