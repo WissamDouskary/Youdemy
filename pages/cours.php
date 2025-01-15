@@ -13,6 +13,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>LearnHub - Course Catalog</title>
 </head>
 <body class="bg-gray-50">
@@ -42,7 +43,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
             <?php else: ?>
             <div class="flex items-center space-x-4 relative group">
                 <div class="cursor-pointer">
-                    <img src="../imgs/profilephoto.png" alt="Profile Photo" class="h-7">
+                    <img src="../Youdemy/imgs/profilephoto.png" alt="Profile Photo" class="h-7">
                     <!-- Dropdown Menu -->
                     <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 invisible opacity-0 
                                 group-hover:visible group-hover:opacity-100 transition-all duration-300 ease-in-out 
@@ -50,7 +51,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50">Profile</a>
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50">Settings</a>
                         <div class="border-t border-gray-100"></div>
-                        <a href="./logout.php" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logout</a>
+                        <a href="../Handling/AuthHandl.php" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logout</a>
                     </div>
                 </div>
             </div>

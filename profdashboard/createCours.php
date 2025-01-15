@@ -63,11 +63,10 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Level</label>
-                                    <select class="w-full p-2 border rounded-md">
-                                        <option>Beginner</option>
-                                        <option>Intermediate</option>
-                                        <option>Advanced</option>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Course Type:</label>
+                                    <select name="course_type" id="course_type" class="w-full p-2 border rounded-md" required onchange="toggleFields()">
+                                        <option value="video">Video</option>
+                                        <option value="document">Document</option>
                                     </select>
                                 </div>
                             </div>
@@ -77,30 +76,15 @@
                     <!-- Course Content -->
                     <div class="bg-white p-6 rounded-lg shadow-sm">
                         <h2 class="text-xl font-semibold mb-6">Course Content</h2>
-                        <div class="space-y-4">
-                            <button class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">
-                                Add New Section
-                            </button>
+                           
+                        <div id="video_fields" style="display:none;">
+                            <label for="video_file" class="block text-sm font-medium text-gray-700 mb-2">Upload Video (MP4 only):</label>
+                            <input type="file" name="video_file" class="w-full p-2 border rounded-md" accept="video/mp4"><br>
+                        </div>
 
-                            <!-- Sample Section -->
-                            <div class="border rounded-md p-4">
-                                <div class="flex justify-between items-center mb-4">
-                                    <input type="text" class="border-none bg-gray-50 p-2 rounded" placeholder="Section Title"/>
-                                    <button class="text-red-600 hover:text-red-800">Remove</button>
-                                </div>
-                                <div class="space-y-2">
-                                    <div class="flex items-center justify-between bg-gray-50 p-2 rounded">
-                                        <span>Introduction Video</span>
-                                        <div class="flex space-x-2">
-                                            <button class="text-blue-600 hover:text-blue-800">Edit</button>
-                                            <button class="text-red-600 hover:text-red-800">Delete</button>
-                                        </div>
-                                    </div>
-                                    <button class="text-purple-600 hover:text-purple-800 text-sm">
-                                        + Add Lecture
-                                    </button>
-                                </div>
-                            </div>
+                        <div id="document_fields" style="display:none;">
+                            <label for="document_content" class="block text-sm font-medium text-gray-700 mb-2">Document Content (Text):</label>
+                            <textarea placeholder="Enter Your Course Content.." name="document_content" rows="10" cols="50" class="w-full p-2 border rounded-md"></textarea><br>
                         </div>
                     </div>
 
@@ -112,10 +96,6 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Price ($)</label>
                                     <input type="number" class="w-full p-2 border rounded-md" placeholder="Enter price"/>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Discount (%)</label>
-                                    <input type="number" class="w-full p-2 border rounded-md" placeholder="Enter discount"/>
                                 </div>
                             </div>
                         </div>
@@ -134,5 +114,20 @@
             </div>
         </div>
     </div>
+    <script>
+    function toggleFields() {
+        const courseType = document.getElementById('course_type').value;
+        
+        if (courseType === 'video') {
+            document.getElementById('video_fields').style.display = 'block';
+            document.getElementById('document_fields').style.display = 'none';
+        } else if (courseType === 'document') {
+            document.getElementById('video_fields').style.display = 'none';
+            document.getElementById('document_fields').style.display = 'block';
+        }
+    }
+
+    window.onload = toggleFields;
+</script>
 </body>
 </html>
