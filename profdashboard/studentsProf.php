@@ -16,7 +16,7 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <span class="text-gray-600">Welcome, Professor Smith</span>
-                    <button class="text-gray-600 hover:text-gray-900">Logout</button>
+                    <a href="../Handling/AuthHandl.php"><button class="text-gray-600 hover:text-gray-900">Logout</button></a>
                 </div>
             </div>
         </div>

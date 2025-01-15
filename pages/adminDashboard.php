@@ -1,4 +1,6 @@
 <?php
+require_once '../classes/admin.php';
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
@@ -88,31 +90,42 @@ if (isset($_SESSION['message'])) {
                         <tr class="text-left text-gray-500">
                             <th class="pb-4">User</th>
                             <th class="pb-4">Role</th>
-                            <th class="pb-4">Joined</th>
                             <th class="pb-4">Status</th>
                             <th class="pb-4">Actions</th>
                         </tr>
                     </thead>
+                    <?php 
+                    $users = Admin::getallusers();
+                    foreach($users as $user){
+                    ?>
                     <tbody>
                         <tr class="border-b">
-                            <td class="py-4">John Smith</td>
-                            <td>Student</td>
-                            <td>2 hours ago</td>
-                            <td><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">Active</span></td>
-                            <td>
-                                <button class="text-blue-600 hover:text-blue-800">Edit</button>
-                            </td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="py-4">Sarah Johnson</td>
-                            <td>Instructor</td>
-                            <td>1 day ago</td>
-                            <td><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">Active</span></td>
-                            <td>
-                                <button class="text-blue-600 hover:text-blue-800">Edit</button>
+                            <td class="py-4"><?php echo $user['prenom'] . " " . $user['nom'] ?></td>
+                            <td><?php echo $user['name'] ?></td>
+                            <?php if($user['status'] === 'waiting'){ ?>
+                                <td><span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm"><?php echo $user['status'] ?></span></td>
+                            <?php } else if ($user['status'] === 'active'){ ?>
+                            <td><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm"><?php echo $user['status'] ?></span></td>
+                            <?php }else if ($user['status'] === 'suspended'){ ?>
+                                <td><span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm"><?php echo $user['status'] ?></span></td>
+                            <?php } ?>
+                            <td >
+                                <div class="flex gap-3">
+                                <form action="../Handling/userHandl.php" method="post">
+                                    <input type="hidden" name="action" value="active">
+                                    <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
+                                    <button type="submit" class="text-green-600 hover:text-green-800">Approve</button>
+                                </form>
+                                <form action="../Handling/userHandl.php" method="post">
+                                    <input type="hidden" name="action" value="suspended">
+                                    <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
+                                    <button type="submit" class="text-red-600 hover:text-red-800">Ban</button>
+                                </form>             
+                                </div>
                             </td>
                         </tr>
                     </tbody>
+                    <?php } ?>
                 </table>
             </div>
         </div>
