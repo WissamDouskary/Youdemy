@@ -2,10 +2,23 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
-if (!isset($_SESSION['user_role']) || ($_SESSION['user_role'] !== 1 && $_SESSION['user_role'] !== 2)) {
 
+if (isset($_SESSION['user_status']) && isset($_SESSION['user_role'])) {
+    // Check if user is suspended
+    if ($_SESSION['user_status'] === 'suspended') {
+        header("Location: ../Youdemy/pages/status_banned.php");
+        exit();
+    }
+
+    if ($_SESSION['user_role'] == 1) {
+        header('Location: ../Youdemy/pages/adminDashboard.php');
+        exit();
+    } else if ($_SESSION['user_role'] == 2) {
+        header('Location: ../Youdemy/pages/prof_dashboard.php');
+        exit();
+    }
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -216,7 +229,7 @@ if (isset($_SESSION['message'])) {
 </body>
 </html>
 <?php
-} else if ($_SESSION['user_role'] == 1) {
+if ($_SESSION['user_role'] == 1) {
     header('Location: ../Youdemy/pages/adminDashboard.php');
     exit();
 } else if ($_SESSION['user_role'] == 2) {

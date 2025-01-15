@@ -131,6 +131,7 @@ class User {
         $_SESSION['user_prenom'] = $user->getPrenom();
         $_SESSION['user_email'] = $user->getEmail();
         $_SESSION['user_role'] = $user->role;
+        $_SESSION['user_status'] = $user->status;
 
         return $user;
     }

@@ -4,6 +4,7 @@ session_start();
 require_once '../classes/user.php';
 
 if(isset($_POST['Createacc'])){
+try{
     if($_POST['Roleselect'] == 3){
         User::signup($_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['Roleselect'], $_POST['password'], 'Active');
         $_SESSION['message'] = [
@@ -19,6 +20,14 @@ if(isset($_POST['Createacc'])){
             'text' => 'Account created successfully, but is awaiting approval.'
         ];
         header('Location: ../index.php');
+        exit();
+    }
+} catch (Exception $e) {
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'An unexpected error occurred. Please try again.'
+        ];
+        header('Location: ../pages/sign_up.php');
         exit();
     }
 }
@@ -62,7 +71,7 @@ if (isset($_POST['signinsubmit'])) {
                 'type' => 'error',
                 'text' => 'Your account is not active. Please contact support.'
             ];
-            header('Location: ../pages/login.php');
+            header('Location: ../pages/status_banned.php');
             exit();
         }
 
