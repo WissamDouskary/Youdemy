@@ -23,28 +23,19 @@ CREATE TABLE categories (
     name VARCHAR(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE course_video (
+CREATE TABLE courses (
     course_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    video TEXT NOT NULL,
-    teacher_id INT NOT NULL,
-    category_id INT,
+    course_type ENUM('video', 'document') NOT NULL,
+    video_url VARCHAR(255) DEFAULT NULL,
+    document_content TEXT DEFAULT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    category_id INT NOT NULL,
+    teacher_id INT NOT NULL
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (teacher_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE
-);
-
-CREATE TABLE course_text (
-    course_id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL,
-    content TEXT NOT NULL,
-    teacher_id INT NOT NULL,
-    category_id INT,
-    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (teacher_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE
+    FOREIGN KEY (category_id) REFERENCES categories(category_id),
+    FOREIGN KEY (teacher_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE tags (

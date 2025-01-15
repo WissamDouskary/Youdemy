@@ -16,9 +16,10 @@
                     <span class="text-2xl font-bold text-purple-600">YouDemy</span>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <form action="../includes/logout.php" method="POST">
-                        <button type="submit" name="logout" class="text-gray-600 hover:text-gray-900">Logout</button>
-                    </form>
+                <a href="../Handling/AuthHandl.php"><button type="submit" name="logout"
+                        class="bg-gray-100 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-200 transition-colors duration-200">
+                    Logout
+                </button></a>
                 </div>
             </div>
         </div>
@@ -68,7 +69,7 @@
 
                 <div class="mt-8">
                     <p class="text-sm text-gray-500">Need help? Contact our support team at</p>
-                    <a href="mailto:support@youdemy.com" class="text-purple-600 hover:text-purple-700 font-medium">support@youdemy.com</a>
+                    <a href="mailto:douskary.wissam@gmail.com" class="text-purple-600 hover:text-purple-700 font-medium">support@youdemy.com</a>
                 </div>
             </div>
 
