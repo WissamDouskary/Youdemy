@@ -24,14 +24,14 @@ if (isset($_POST['CreateCourseSub'])) {
 
     if ($course_type === 'video') {
         if (isset($_FILES['video_file']) && isset($_FILES['course_image'])) {
-            $uploadDirVideo = __DIR__ . '/../uploads/videos/';
+            $uploadDirVideo = '../uploads/videos/';
             if (!is_dir($uploadDirVideo)) {
                 mkdir($uploadDirVideo, 0777, true);
             }
             $videoFile = $_FILES['video_file'];
             $videoPath = $uploadDirVideo . basename($videoFile['name']);
             
-            $uploadDirImage = __DIR__ . '/../uploads/images/';
+            $uploadDirImage = '../uploads/images/';
             if (!is_dir($uploadDirImage)) {
                 mkdir($uploadDirImage, 0777, true);
             }
@@ -79,7 +79,7 @@ if (isset($_POST['CreateCourseSub'])) {
         }
     } else if ($course_type === 'document') {
         if (isset($_FILES['course_image'])) {
-            $uploadDirImage = __DIR__ . '/../uploads/images/';
+            $uploadDirImage = '../uploads/images/';
             if (!is_dir($uploadDirImage)) {
                 mkdir($uploadDirImage, 0777, true);
             }

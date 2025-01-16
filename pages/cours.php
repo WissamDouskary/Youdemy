@@ -43,20 +43,28 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
                 </a>
             </div>
             <?php else: ?>
-            <div class="flex items-center space-x-4 relative group">
-                <div class="cursor-pointer">
-                    <img src="../Youdemy/imgs/profilephoto.png" alt="Profile Photo" class="h-7">
-                    <!-- Dropdown Menu -->
-                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 invisible opacity-0 
-                                group-hover:visible group-hover:opacity-100 transition-all duration-300 ease-in-out 
-                                transform group-hover:translate-y-0 translate-y-1">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50">Profile</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50">Settings</a>
-                        <div class="border-t border-gray-100"></div>
-                        <a href="../Handling/AuthHandl.php" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logout</a>
+                <div class="flex items-center space-x-4 relative group">
+                    <div class="cursor-pointer flex items-center space-x-2">
+                        <img src="../imgs/profilephoto.png" alt="Profile Photo" class="h-8 rounded-full">
+                        <!-- Dropdown Menu -->
+                        <div class="absolute right-0 mt-32 w-56 bg-white rounded-lg shadow-xl py-2 invisible opacity-0 
+                                    group-hover:visible group-hover:opacity-100 transition-all duration-300 ease-in-out">
+                            <a href="#" class="block px-4 py-3 text-sm text-gray-700 hover:bg-purple-50 flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                <span>Profile</span>
+                            </a>
+                            <a href="#" class="block px-4 py-3 text-sm text-gray-700 hover:bg-purple-50 flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                <span>Settings</span>
+                            </a>
+                            <div class="border-t border-gray-100 my-2"></div>
+                            <a href="../Handling/AuthHandl.php" class="block px-4 py-3 text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                                <span>Logout</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
             <?php endif; ?>
         </div>
     </div>
@@ -84,31 +92,67 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
             <!-- Course List -->
             <div class="">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Course Card 1 -->
-                    
-                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                        <img src="/api/placeholder/400/200" alt="Course thumbnail" class="w-full h-48 object-cover"/>
-                        <div class="p-6">
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="font-semibold">Complete Web Development Bootcamp</h3>
-                                <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">Bestseller</span>
-                            </div>
-                            <p class="text-gray-600 text-sm mb-2">Learn web development from scratch with HTML, CSS, JavaScript, React, and Node.js</p>
-                            <div class="flex items-center mb-2">
-                                <span class="text-sm text-gray-600">By John Smith</span>
-                                <span class="mx-2">•</span>
-                                <span class="text-sm text-gray-600">Updated January 2025</span>
-                            </div>
-                            <div class="flex items-center mb-2">
-                                <span class="text-yellow-400">★★★★★</span>
-                                <span class="text-sm text-gray-600 ml-1">(4.8) • 12,345 students</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-lg font-bold text-purple-600">$89.99</span>
-                                <button class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Add to Cart</button>
-                            </div>
-                        </div>
-                    </div>
+                   <!-- Course Card 1 -->
+<?php 
+$cours = VideoCours::showAllCours();
+foreach($cours as $cour){
+?>
+<div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
+    <!-- Course Thumbnail -->
+    <div class="relative">
+        <img src="<?php echo $cour->getcourseImage() ?>" alt="Course thumbnail" class="w-full h-48 object-cover"/>
+        <!-- Course Level Tag -->
+        <span class="absolute top-4 left-4 bg-white/90 px-2 py-1 rounded text-xs font-medium text-gray-700">
+            beginner
+        </span>
+    </div>
+
+    <div class="p-6">
+        <!-- Course Title -->
+        <div class="flex justify-between items-start mb-2">
+            <h3 class="font-semibold hover:text-purple-600 transition-colors">
+                <?php echo strlen($cour->gettitle()) > 40 ? substr($cour->gettitle(), 0, 40) . '...' : $cour->gettitle();?>
+            </h3>
+        </div>
+
+        <!-- Course Description -->
+        <p class="text-gray-600 text-sm mb-4">
+            <?php echo strlen($cour->getdescription()) > 100 ? substr($cour->getdescription(), 0, 50) . '...' : $cour->getdescription(); ?>
+        </p>
+
+        <!-- Instructor & Date -->
+        <div class="flex items-center mb-3">
+            <span class="text-sm text-gray-600">By <?php echo $cour->personName ?></span>
+            <span class="mx-2">•</span>
+            <span class="text-sm text-gray-600">Updated <?php echo (new DateTime($cour->creationdate))->format('F j, Y') ?></span>
+        </div>
+
+        <!-- Course Stats -->
+        <div class="flex items-center space-x-4 mb-4">
+            <div class="flex items-center text-sm text-gray-600">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+                12345 
+            </div>
+            <span class="mx-2">•</span>
+            <div>
+            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">srdi</span>
+            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">srdi</span>
+            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">srdi</span>
+            </div>
+        </div>
+
+        <!-- Price and Enroll Button -->
+        <div class="flex items-center justify-between mt-4">
+            <span class="text-lg font-bold text-purple-600"><?php echo $cour->getprice() ?>$</span>
+            <button class="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
+                Enroll Now
+            </button>
+        </div>
+    </div>
+</div>
+                    <?php } ?>
                 </div>
 
                 <!-- Pagination -->
