@@ -158,7 +158,8 @@ if (isset($_SESSION['message'])) {
                             <th class="pb-4">Actions</th>
                         </tr>
                     </thead>
-                    <?php 
+                    <?php
+                    
                     $users = Admin::getallusers();
                     foreach($users as $user){
                     ?>

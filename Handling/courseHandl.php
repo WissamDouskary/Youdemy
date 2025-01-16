@@ -5,7 +5,7 @@ require_once '../classes/cours.php';
 require_once '../classes/Tag.php';
 require_once '../classes/course_tag.php';
 
-if(isset($_POST['CreateCourseSub'])){
+if (isset($_POST['CreateCourseSub'])) {
     $course_title = $_POST['course_title'];
     $course_description = $_POST['course_description'];
     $tags = explode(',', $_POST['tags']);
@@ -13,42 +13,49 @@ if(isset($_POST['CreateCourseSub'])){
     $course_price = $_POST['course_price'];
     $course_type = $_POST['course_type'];
 
-
-
     if ($course_type === 'video') {
-    if (isset($_FILES['video_file'])) {
-        
-        $uploadDir = __DIR__ . '/../uploads/videos/';
-        
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
-        
-        $videoFile = $_FILES['video_file'];
-        $videoPath = $uploadDir . basename($videoFile['name']);
-        
-        if (move_uploaded_file($videoFile['tmp_name'], $videoPath)) {
-            $course = new VideoCours($course_title, $course_description, $videoPath, $course_price, $categories_select, $_SESSION['user_id']);
+        if (isset($_FILES['video_file']) && isset($_FILES['course_image'])) {
+            $uploadDirVideo = __DIR__ . '/../uploads/videos/';
+            if (!is_dir($uploadDirVideo)) {
+                mkdir($uploadDirVideo, 0777, true);
+            }
+            $videoFile = $_FILES['video_file'];
+            $videoPath = $uploadDirVideo . basename($videoFile['name']);
             
-            try {
-                $course_id = $course->ajouterCours();
-                
-                $tag_ids = Tag::addMultipleTags($tags);
-                foreach ($tag_ids as $tagID) {
-                    $coursetag = new CourseTag($tagID, $course_id);
-                    $coursetag->addTagToArticle();
-                }
+            $uploadDirImage = __DIR__ . '/../uploads/images/';
+            if (!is_dir($uploadDirImage)) {
+                mkdir($uploadDirImage, 0777, true);
+            }
+            $imageFile = $_FILES['course_image'];
+            $imagePath = $uploadDirImage . basename($imageFile['name']);
 
-                $_SESSION['message'] = [
-                    'type' => 'success',
-                    'text' => 'Course created successfully!'
-                ];
-                header('Location: ../profdashboard/createCours.php');
-                exit();
-            } catch (Exception $e) {
+            if (move_uploaded_file($videoFile['tmp_name'], $videoPath) && move_uploaded_file($imageFile['tmp_name'], $imagePath)) {
+                $course = new VideoCours($course_title, $course_description, $imagePath, $videoPath, $course_price, $categories_select, $_SESSION['user_id']);
+                try {
+                    $course_id = $course->ajouterCours();
+                    $tag_ids = Tag::addMultipleTags($tags);
+                    foreach ($tag_ids as $tagID) {
+                        $coursetag = new CourseTag($tagID, $course_id);
+                        $coursetag->addTagToArticle();
+                    }
+                    $_SESSION['message'] = [
+                        'type' => 'success',
+                        'text' => 'Course created successfully!'
+                    ];
+                    header('Location: ../profdashboard/createCours.php');
+                    exit();
+                } catch (Exception $e) {
+                    $_SESSION['message'] = [
+                        'type' => 'error',
+                        'text' => $e->getMessage()
+                    ];
+                    header('Location: ../profdashboard/createCours.php');
+                    exit();
+                }
+            } else {
                 $_SESSION['message'] = [
                     'type' => 'error',
-                    'text' => $e->getMessage()
+                    'text' => 'Failed to upload the video or image.'
                 ];
                 header('Location: ../profdashboard/createCours.php');
                 exit();
@@ -56,49 +63,60 @@ if(isset($_POST['CreateCourseSub'])){
         } else {
             $_SESSION['message'] = [
                 'type' => 'error',
-                'text' => 'Failed to upload the video. Please check the directory permissions.'
+                'text' => 'Video and image files are required.'
             ];
             header('Location: ../profdashboard/createCours.php');
             exit();
         }
-    }
-
     } else if ($course_type === 'document') {
-        $content = $_POST['document_content'];
-        $course = new DocumentCours($course_title, $course_description, $content, $course_price, $categories_select, $_SESSION['user_id']);
-        try{
-        $course_id = $course->ajouterCours();
-                
-        $tag_ids = Tag::addMultipleTags($tags);
-        foreach ($tag_ids as $tagID) {
-            $coursetag = new CourseTag($tagID, $course_id);
-            $coursetag->addTagToArticle();
-        }
+        if (isset($_FILES['course_image'])) {
+            $uploadDirImage = __DIR__ . '/../uploads/images/';
+            if (!is_dir($uploadDirImage)) {
+                mkdir($uploadDirImage, 0777, true);
+            }
+            $imageFile = $_FILES['course_image'];
+            $imagePath = $uploadDirImage . basename($imageFile['name']);
 
-        $_SESSION['message'] = [
-            'type' => 'success',
-            'text' => "Course created successfully!"
-        ];
-        header('Location: ../profdashboard/createCours.php');
-        exit();
-        }
-        catch(Exception $e){
-            $_SESSION['message'] = [
-                'type' => 'error',
-                'text' => $e->getMessage()
-            ];
-            header('Location: ../profdashboard/createCours.php');
-            exit();
+            if (move_uploaded_file($imageFile['tmp_name'], $imagePath)) {
+                $content = $_POST['document_content'];
+                $course = new DocumentCours($course_title, $course_description, $imagePath, $content, $course_price, $categories_select, $_SESSION['user_id']);
+                try {
+                    $course_id = $course->ajouterCours();
+                    $tag_ids = Tag::addMultipleTags($tags);
+                    foreach ($tag_ids as $tagID) {
+                        $coursetag = new CourseTag($tagID, $course_id);
+                        $coursetag->addTagToArticle();
+                    }
+                    $_SESSION['message'] = [
+                        'type' => 'success',
+                        'text' => "Course created successfully!"
+                    ];
+                    header('Location: ../profdashboard/createCours.php');
+                    exit();
+                } catch (Exception $e) {
+                    $_SESSION['message'] = [
+                        'type' => 'error',
+                        'text' => $e->getMessage()
+                    ];
+                    header('Location: ../profdashboard/createCours.php');
+                    exit();
+                }
+            } else {
+                $_SESSION['message'] = [
+                    'type' => 'error',
+                    'text' => 'Failed to upload the image.'
+                ];
+                header('Location: ../profdashboard/createCours.php');
+                exit();
+            }
         }
     } else {
         $_SESSION['message'] = [
             'type' => 'error',
-            'text' => 'Invalid course type. Video upload is required.'
+            'text' => 'Invalid course type.'
         ];
         header('Location: ../profdashboard/createCours.php');
         exit();
     }
 }
-
-
 ?>

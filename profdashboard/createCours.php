@@ -99,6 +99,10 @@ if (isset($_SESSION['message'])) {
                                 <input type="text" name="course_title" class="w-full p-2 border rounded-md" placeholder="Enter course title"/>
                             </div>
                             <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Course Image</label>
+                                <input type="file" name="course_image" class="w-full p-2 border rounded-md" />
+                            </div>
+                            <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Course Description</label>
                                 <textarea name="course_description" class="w-full p-2 border rounded-md h-32" placeholder="Enter course description"></textarea>
                             </div>
