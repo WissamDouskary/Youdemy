@@ -47,7 +47,7 @@ CREATE TABLE course_tags (
     course_id INT NOT NULL, 
     tag_id INT NOT NULL,
     PRIMARY KEY (course_id, tag_id),
-    FOREIGN KEY (course_id) REFERENCES course_video(course_id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE,
     FOREIGN KEY (tag_id) REFERENCES tags(tag_id) ON DELETE CASCADE
 );
 
@@ -57,5 +57,5 @@ CREATE TABLE enrollments (
     inscription_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(student_id, course_id),
     FOREIGN KEY (student_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (course_id) REFERENCES course_video(course_id) ON DELETE CASCADE
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE
 );
