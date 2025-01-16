@@ -13,6 +13,15 @@ if (isset($_POST['CreateCourseSub'])) {
     $course_price = $_POST['course_price'];
     $course_type = $_POST['course_type'];
 
+    if(empty($course_title) || empty($course_description) || empty($tags) || empty($categories_select) || empty($course_price) || empty($course_type)){
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'please fill all fields!'
+        ];
+        header('Location: ../profdashboard/createCours.php');
+        exit();
+    }
+
     if ($course_type === 'video') {
         if (isset($_FILES['video_file']) && isset($_FILES['course_image'])) {
             $uploadDirVideo = __DIR__ . '/../uploads/videos/';
