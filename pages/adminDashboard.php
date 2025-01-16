@@ -164,27 +164,27 @@ if (isset($_SESSION['message'])) {
                     ?>
                     <tbody>
                         <tr class="border-b">
-                            <td class="py-4"><?php echo $user['prenom'] . " " . $user['nom'] ?></td>
-                            <td><?php echo $user['name'] ?></td>
-                            <?php if($user['status'] === 'waiting'){ ?>
-                                <td><span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm"><?php echo $user['status'] ?></span></td>
-                            <?php } else if ($user['status'] === 'active'){ ?>
-                            <td><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm"><?php echo $user['status'] ?></span></td>
-                            <?php }else if ($user['status'] === 'suspended'){ ?>
-                                <td><span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm"><?php echo $user['status'] ?></span></td>
+                            <td class="py-4"><?php echo $user->getPrenom() . " " . $user->getNom() ?></td>
+                            <td><?php echo $user->getrole() ?></td>
+                            <?php if($user->getStatus() === 'waiting'){ ?>
+                                <td><span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm"><?php echo $user->getStatus() ?></span></td>
+                            <?php } else if ($user->getStatus() === 'active'){ ?>
+                            <td><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm"><?php echo $user->getStatus() ?></span></td>
+                            <?php }else if ($user->getStatus() === 'suspended'){ ?>
+                                <td><span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm"><?php echo $user->getStatus() ?></span></td>
                             <?php } ?>
                             <td >
                                 <div class="flex gap-3">
                                 <form action="../Handling/userHandl.php" method="post">
                                     <input type="hidden" name="action" value="active">
-                                    <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
+                                    <input type="hidden" name="user_id" value="<?php echo $user->getId(); ?>">
                                     <button type="submit" class="text-green-600 hover:text-green-800">Approve</button>
                                 </form>
                                 <form action="../Handling/userHandl.php" method="post">
                                     <input type="hidden" name="action" value="suspended">
-                                    <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
+                                    <input type="hidden" name="user_id" value="<?php echo $user->getId(); ?>">
                                     <button type="submit" class="text-red-600 hover:text-red-800">Ban</button>
-                                </form>             
+                                </form>       
                                 </div>
                             </td>
                         </tr>
