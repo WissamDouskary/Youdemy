@@ -2,6 +2,7 @@
 require_once '../classes/conn.php';
 
 abstract class Cours {
+    protected $id;
     protected $title;
     protected $description;
     protected $price;
@@ -29,6 +30,8 @@ class VideoCours extends Cours {
         $this->videoUrl = $videoUrl;
     }
 
+    function getId(){ return $this->id;}
+
     public function ajouterCours() {
         $db = Dbconnection::getInstance()->getConnection();
 
@@ -44,6 +47,9 @@ class VideoCours extends Cours {
             $stmt->bindParam(':teacher_id', $this->teacher_id);
 
             $stmt->execute();
+
+            $this->id = $db->lastInsertId();
+            return $this->id;
         }
         catch(PDOException $e){
             throw new Exception("There is an error while create Course with video!");
@@ -53,7 +59,7 @@ class VideoCours extends Cours {
     static public function afficherCours() {
         $db = Dbconnection::getInstance()->getConnection();
 
-        
+
     }
 }
 
@@ -80,6 +86,8 @@ class DocumentCours extends Cours {
             $stmt->bindParam(':teacher_id', $this->teacher_id);
 
             $stmt->execute();
+
+            $this->id = $db->lastInsertId();
         }
         catch(PDOException $e){
             throw new Exception("There is an error while create Course with doc text!");

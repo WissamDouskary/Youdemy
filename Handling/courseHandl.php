@@ -2,6 +2,8 @@
 session_start();
 
 require_once '../classes/cours.php';
+require_once '../classes/Tag.php';
+require_once '../classes/course_tag.php';
 
 if(isset($_POST['CreateCourseSub'])){
     $course_title = $_POST['course_title'];
@@ -27,8 +29,15 @@ if(isset($_POST['CreateCourseSub'])){
         
         if (move_uploaded_file($videoFile['tmp_name'], $videoPath)) {
             $course = new VideoCours($course_title, $course_description, $videoPath, $course_price, $categories_select, $_SESSION['user_id']);
+            
             try {
-                $course->ajouterCours();
+                $course_id = $course->ajouterCours();
+                
+                $tag_ids = Tag::addMultipleTags($tags);
+                foreach ($tag_ids as $tagID) {
+                    $coursetag = new CourseTag($tagID, $course_id);
+                    $coursetag->addTagToArticle();
+                }
                 
                 $_SESSION['message'] = [
                     'type' => 'success',
