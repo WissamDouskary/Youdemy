@@ -11,7 +11,7 @@ class Admin extends User{
     public static function getallusers(){
         $db = Dbconnection::getInstance()->getconnection();
 
-        try{
+        try {
             $sql = "SELECT u.*, r.name
                     FROM users u
                     LEFT JOIN role r ON u.role_id = r.role_id
@@ -19,16 +19,22 @@ class Admin extends User{
             $stmt = $db->prepare($sql);
             $stmt->execute();
 
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-        catch (PDOException $e){
-            throw new Exception("Error while get all users: " . $e->getMessage());
+            $usersData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $users = [];
+            foreach ($usersData as $data) {
+                $users[] = new User($data['user_id'], $data['nom'], $data['prenom'], $data['email'], $data['name'], $data['status']);
+            }
+            
+            return $users;
+        } catch (PDOException $e) {
+            throw new Exception("Error while getting all users: " . $e->getMessage());
         }
     }
 
     public static function changeEnseignant($userId, $newStatus) {
         $db = Dbconnection::getInstance()->getConnection();
-    
+
         try {
             $sql = "UPDATE users SET status = :status WHERE user_id = :user_id";
             $stmt = $db->prepare($sql);
@@ -39,7 +45,5 @@ class Admin extends User{
             throw new Exception("Error changing user status: " . $e->getMessage());
         }
     }
-
-    
 
 }

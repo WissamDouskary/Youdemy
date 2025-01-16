@@ -88,6 +88,7 @@ class DocumentCours extends Cours {
             $stmt->execute();
 
             $this->id = $db->lastInsertId();
+            return $this->id;
         }
         catch(PDOException $e){
             throw new Exception("There is an error while create Course with doc text!");

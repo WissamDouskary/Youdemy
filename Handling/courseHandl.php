@@ -38,7 +38,7 @@ if(isset($_POST['CreateCourseSub'])){
                     $coursetag = new CourseTag($tagID, $course_id);
                     $coursetag->addTagToArticle();
                 }
-                
+
                 $_SESSION['message'] = [
                     'type' => 'success',
                     'text' => 'Course created successfully!'
@@ -65,9 +65,15 @@ if(isset($_POST['CreateCourseSub'])){
 
     } else if ($course_type === 'document') {
         $content = $_POST['document_content'];
-        try{
         $course = new DocumentCours($course_title, $course_description, $content, $course_price, $categories_select, $_SESSION['user_id']);
-        $course->ajouterCours();
+        try{
+        $course_id = $course->ajouterCours();
+                
+        $tag_ids = Tag::addMultipleTags($tags);
+        foreach ($tag_ids as $tagID) {
+            $coursetag = new CourseTag($tagID, $course_id);
+            $coursetag->addTagToArticle();
+        }
 
         $_SESSION['message'] = [
             'type' => 'success',
