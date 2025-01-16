@@ -9,6 +9,8 @@ abstract class Cours {
     protected $price;
     protected $category_id;
     protected $teacher_id;
+    public $personName;
+    public $creationdate;
 
     public function __construct($title, $description, $course_image, $price, $category_id, $teacher_id) {
         $this->title = $title;
@@ -22,6 +24,8 @@ abstract class Cours {
     function getId(){ return $this->id;}
     function gettitle(){ return $this->title;}
     function getdescription(){ return $this->description;}
+    function getcourseImage(){ return $this->course_image;}
+    function getprice(){ return $this->price;}
     function getcategory_id(){ return $this->category_id;}
     function getteacher_id(){ return $this->teacher_id;}
 
@@ -29,17 +33,56 @@ abstract class Cours {
 
     static abstract public function afficherCours();
     
-    static function showAllCours(){
+    static public function showAllCours() {
         $db = Dbconnection::getInstance()->getConnection();
 
+        try {
+            $sql = "SELECT c.*, u.prenom, u.nom, u.user_id 
+                    FROM courses c
+                    LEFT JOIN users u ON c.teacher_id = u.user_id";
 
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
 
-        // try{
-        //     $sql = "SELECT * FROM courses "
-        // }
-        // catch(PDOException $e){
-        //     throw new Exception('There is an error where show all cours Methode on class Cours' . $e->getMessage());
-        // }
+            $courseData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $courses = [];
+
+            foreach ($courseData as $cours) {
+                if ($cours['course_type'] === 'video') {
+                    $course = new VideoCours(
+                        $cours['title'], 
+                        $cours['description'],
+                        $cours['course_image'],
+                        $cours['video_url'],
+                        $cours['price'],
+                        $cours['category_id'], 
+                        $cours['teacher_id']
+                    );
+                } elseif ($cours['course_type'] === 'document') {
+                    $course = new DocumentCours(
+                        $cours['title'], 
+                        $cours['description'],
+                        $cours['course_image'],
+                        $cours['document_content'],
+                        $cours['price'],
+                        $cours['category_id'], 
+                        $cours['teacher_id']
+                    );
+                } else {
+                    continue;
+                }
+
+                $course->id = $cours['course_id'];
+                $course->personName = $cours['prenom'] . " " . $cours['nom'];
+                $course->creationdate = $cours['date_creation'];
+                $courses[] = $course;
+            }
+
+            return $courses;
+        } catch (PDOException $e) {
+            throw new Exception("Error while fetching all courses: " . $e->getMessage());
+        }
     }
 }
 
@@ -83,7 +126,11 @@ class VideoCours extends Cours {
         $db = Dbconnection::getInstance()->getConnection();
     
         try {
-            $sql = "SELECT * FROM courses WHERE course_type = 'video'";
+            $sql = "SELECT c.*, u.*
+                    FROM courses c
+                    LEFT JOIN users u ON c.teacher_id = u.user_id
+                    WHERE course_type = 'video'";
+
             $stmt = $db->prepare($sql);
             $stmt->execute();
     
@@ -97,11 +144,13 @@ class VideoCours extends Cours {
                     $cours['description'],
                     $cours['course_image'],
                     $cours['video_url'],
-                    $cours['price'], 
+                    $cours['price'],
                     $cours['category_id'], 
                     $cours['teacher_id']
                 );
                 $videoCourse->id = $cours['course_id'];
+                $videoCourse->personName = $cours['prenom'] . " " . $cours['nom'];
+                $videoCourse->creationdate = $cours['date_creation'];
                 $courses[] = $videoCourse;
             }
 
@@ -155,7 +204,10 @@ class DocumentCours extends Cours {
         $db = Dbconnection::getInstance()->getConnection();
     
         try {
-            $sql = "SELECT * FROM courses WHERE course_type = 'document'";
+            $sql = "SELECT c.*, u.*
+                    FROM courses c
+                    LEFT JOIN users u ON c.teacher_id = u.user_id
+                    WHERE course_type = 'document'";
             $stmt = $db->prepare($sql);
             $stmt->execute();
     
@@ -174,6 +226,8 @@ class DocumentCours extends Cours {
                     $cours['teacher_id']
                 );
                 $videoCourse->id = $cours['course_id'];
+                $videoCourse->personName = $cours['prenom'] . " " . $cours['nom'];
+                $videoCourse->creationdate = $cours['date_creation'];
                 $courses[] = $videoCourse;
             }
 

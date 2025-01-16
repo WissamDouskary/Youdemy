@@ -57,7 +57,7 @@ if (isset($_SESSION['user_status']) && isset($_SESSION['user_role'])) {
                 <?php else: ?>
                 <div class="flex items-center space-x-4 relative group">
                     <div class="cursor-pointer flex items-center space-x-2">
-                        <img src="../Youdemy/imgs/profilephoto.png" alt="Profile Photo" class="h-10 w-10 rounded-full border-2 border-purple-200">
+                        <img src="../Youdemy/imgs/profilephoto.png" alt="Profile Photo" class="h-8 rounded-full">
                         <!-- Dropdown Menu -->
                         <div class="absolute right-0 mt-32 w-56 bg-white rounded-lg shadow-xl py-2 invisible opacity-0 
                                     group-hover:visible group-hover:opacity-100 transition-all duration-300 ease-in-out">
