@@ -2,7 +2,7 @@
 require_once '../classes/enrollement.php';
 session_start();
 
-if(isset($_GET['course_id'])){
+if(isset($_GET['course_id']) && $_SESSION['user_id']){
     $course_id = $_GET['course_id'];
     $user_id = $_SESSION['user_id'];
 
@@ -14,7 +14,6 @@ if(isset($_GET['course_id'])){
         'type' => 'success',
         'text' => 'enrolled success'
     ];
-
     header('Location: ../pages/cours.php');
     exit();
     }
@@ -26,6 +25,13 @@ if(isset($_GET['course_id'])){
         header('Location: ../pages/cours.php');
         exit();
     }
+}else{
+    $_SESSION['message'] = [
+        'type' => 'error',
+        'text' => "please sign up or login to your account to Enrolle course!"
+    ];
+    header('Location: ../pages/cours.php');
+    exit();
 }
 
 ?>
