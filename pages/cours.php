@@ -17,6 +17,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>LearnHub - Course Catalog</title>
 </head>
 <body class="bg-gray-50">
@@ -70,6 +71,29 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
         </div>
     </div>
 </nav>
+
+<?php
+    if (isset($_SESSION['message'])) {
+        $message = $_SESSION['message'];
+        $type = $message['type'];
+        $text = $message['text'];
+
+        echo "
+            <script>
+                Swal.fire({
+                    icon: '$type',
+                    title: '$type',
+                    text: '$text',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#7C3AED'
+                });
+            </script>
+        ";
+
+        unset($_SESSION['message']);
+    }
+?>
+
 
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 py-8">
@@ -151,13 +175,11 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
                             <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><?php echo $tag->getname() ?></span>
                             <?php } ?>
                             </div>
-                            
                         </div>
-
                         <!-- Price and Enroll Button -->
                         <div class="flex items-center justify-between mt-4">
                             <span class="text-lg font-bold text-purple-600"><?php echo $cour->getprice() ?>$</span>
-                            <a href="../pages/CoursePreview.php?course_id=<?php echo $cour->getId() ?>"><button class="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
+                            <a href="../Handling/enrollHandle.php?course_id=<?php echo $cour->getId()?>"><button class="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
                                 Enroll Now
                             </button></a>
                         </div>
