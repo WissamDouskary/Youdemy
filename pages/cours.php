@@ -33,6 +33,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
             <ul class="flex gap-9">
                 <a href="../index.php"><li>Home</li></a>
                 <a href="../pages/cours.php"><li>Courses</li></a>
+                <a href="../pages/enrolledCours.php" class="hover:text-purple-600 transition-colors"><li>My Enrolled</li></a>
             </ul>
             
             <?php if (!isset($_SESSION['user_role'])): ?>
@@ -100,7 +101,16 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
         <!-- Search and Filters -->
         <div class="flex flex-col md:flex-row gap-4 mb-8">
             <div class="md:w-2/3">
-                <input type="text" placeholder="Search courses..." class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <input 
+                type="text" 
+                class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="Search for courses..." 
+                id="search-box" 
+                hx-get="/search"
+                hx-trigger="keyup" 
+                hx-target="#results"
+                hx-swap="innerHTML"
+            >
             </div>
             <div class="md:w-1/3 flex gap-2">
                 <select class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
@@ -159,12 +169,15 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
                         </div>
 
                         <!-- Course Stats -->
+                         <?php 
+                         $counts = Cours::CountenrollCourses($cour->getId());
+                         ?>
                         <div class="flex items-center space-x-4 mb-4">
                             <div class="flex items-center text-sm text-gray-600">
                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                                 </svg>
-                                12345 
+                                <?php echo $counts['enroll_Count'] ?>
                             </div>
                             <span class="mx-2">•</span>
                             <div>
@@ -172,8 +185,10 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
                             $tags = Tag::gettagsforCours($cour->getId());
                             foreach($tags as $tag){
                             ?>
-                            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><?php echo $tag->getname() ?></span>
-                            <?php } ?>
+                            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm"><?php echo strlen($tag->getname()) > 10 ? substr($tag->getname(), 0, 10) . '...' : $tag->getname(); ?></span>
+                            <?php
+                            }
+                            ?>
                             </div>
                         </div>
                         <!-- Price and Enroll Button -->

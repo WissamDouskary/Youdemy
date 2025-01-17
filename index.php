@@ -43,6 +43,7 @@ if (isset($_SESSION['user_status']) && isset($_SESSION['user_role'])) {
                 <ul class="hidden md:flex gap-8 text-gray-600">
                     <a href="../Youdemy/index.php" class="hover:text-purple-600 transition-colors"><li>Home</li></a>
                     <a href="../Youdemy/pages/cours.php" class="hover:text-purple-600 transition-colors"><li>Courses</li></a>
+                    <a href="../Youdemy/pages/enrolledCours.php" class="hover:text-purple-600 transition-colors"><li>My Enrolled</li></a>
                 </ul>
                 
                 <?php if (!isset($_SESSION['user_role'])): ?>
