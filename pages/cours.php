@@ -16,6 +16,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>LearnHub - Course Catalog</title>
@@ -104,12 +105,13 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
             <input 
                 type="text" 
                 class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="Search for courses..." 
-                id="search-box" 
-                hx-get="/search"
-                hx-trigger="keyup" 
+                placeholder="Search for courses..."
+                id="search-box"
+                hx-get="../Handling/searchHandle.php"
+                hx-trigger="keyup"
                 hx-target="#results"
                 hx-swap="innerHTML"
+                name="searchfield"
             >
             </div>
             <div class="md:w-1/3 flex gap-2">
@@ -126,7 +128,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
 
             <!-- Course List -->
             <div class="">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div id="results" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                    <!-- Course Card 1 -->
                 <?php 
                 $cours = VideoCours::showAllCours();
@@ -201,7 +203,6 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
                     </div>
                 </div>
                 <?php } ?>
-
                 </div>
 
                 <!-- Pagination -->
