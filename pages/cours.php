@@ -102,10 +102,16 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
                     <!-- Course Thumbnail -->
                     <div class="relative">
                         <img src="<?php echo $cour->getcourseImage() ?>" alt="Course thumbnail" class="w-full h-48 object-cover"/>
-                        <!-- Course Level Tag -->
-                        <span class="absolute top-4 left-4 bg-white/90 px-2 py-1 rounded text-xs font-medium text-gray-700">
-                            beginner
+                        <!-- course type -->
+                        <?php if($cour->cours_type == 'video'){ ?>
+                        <span class="absolute top-4 left-4 bg-white/90 px-2 py-1 rounded text-xs font-medium text-white bg-purple-600 rounded-full">
+                            Video
                         </span>
+                        <?php } else if ($cour->cours_type == 'document'){ ?>
+                        <span class="absolute top-4 left-4 bg-white/90 px-2 py-1 rounded text-xs font-medium text-white bg-green-600 rounded-full">
+                            document
+                        </span>
+                        <?php } ?>
                     </div>
 
                     <div class="p-6">
@@ -151,9 +157,9 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
                         <!-- Price and Enroll Button -->
                         <div class="flex items-center justify-between mt-4">
                             <span class="text-lg font-bold text-purple-600"><?php echo $cour->getprice() ?>$</span>
-                            <button class="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
+                            <a href="../pages/CoursePreview.php?course_id=<?php echo $cour->getId() ?>"><button class="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
                                 Enroll Now
-                            </button>
+                            </button></a>
                         </div>
                     </div>
                 </div>

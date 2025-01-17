@@ -53,7 +53,7 @@ CREATE TABLE course_tags (
 
 CREATE TABLE enrollments (
     student_id INT NOT NULL,
-    course_id INT NOT NULL, 
+    course_id INT NOT NULL,
     inscription_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(student_id, course_id),
     FOREIGN KEY (student_id) REFERENCES users(user_id) ON DELETE CASCADE,

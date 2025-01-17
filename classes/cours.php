@@ -11,6 +11,7 @@ abstract class Cours {
     protected $teacher_id;
     public $personName;
     public $creationdate;
+    public $cours_type;
 
     public function __construct($title, $description, $course_image, $price, $category_id, $teacher_id) {
         $this->title = $title;
@@ -76,6 +77,7 @@ abstract class Cours {
                 $course->id = $cours['course_id'];
                 $course->personName = $cours['prenom'] . " " . $cours['nom'];
                 $course->creationdate = $cours['date_creation'];
+                $course->cours_type = $cours['course_type'];
                 $courses[] = $course;
             }
 
@@ -84,10 +86,119 @@ abstract class Cours {
             throw new Exception("Error while fetching all courses: " . $e->getMessage());
         }
     }
+
+    static public function showspecificsCours($teacher_id) {
+        $db = Dbconnection::getInstance()->getConnection();
+
+        try {
+            $sql = "SELECT c.*, u.prenom, u.nom, u.user_id 
+                    FROM courses c
+                    LEFT JOIN users u ON c.teacher_id = u.user_id
+                    WHERE c.teacher_id = :teacher_id";
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam("teacher_id", $teacher_id);
+            $stmt->execute();
+
+            $courseData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $courses = [];
+
+            foreach ($courseData as $cours) {
+                if ($cours['course_type'] === 'video') {
+                    $course = new VideoCours(
+                        $cours['title'], 
+                        $cours['description'],
+                        $cours['course_image'],
+                        $cours['video_url'],
+                        $cours['price'],
+                        $cours['category_id'], 
+                        $cours['teacher_id']
+                    );
+                } elseif ($cours['course_type'] === 'document') {
+                    $course = new DocumentCours(
+                        $cours['title'], 
+                        $cours['description'],
+                        $cours['course_image'],
+                        $cours['document_content'],
+                        $cours['price'],
+                        $cours['category_id'], 
+                        $cours['teacher_id']
+                    );
+                } else {
+                    continue;
+                }
+
+                $course->id = $cours['course_id'];
+                $course->personName = $cours['prenom'] . " " . $cours['nom'];
+                $course->creationdate = $cours['date_creation'];
+                $courses[] = $course;
+            }
+
+            return $courses;
+        } catch (PDOException $e) {
+            throw new Exception("Error while fetching all courses: " . $e->getMessage());
+        }
+    }
+
+    static function getCourseById($course_id) {
+        $db = Dbconnection::getInstance()->getConnection();
+    
+        try {
+            $sql = "SELECT c.*, u.prenom, u.nom, u.user_id
+                    FROM courses c
+                    LEFT JOIN users u ON c.teacher_id = u.user_id
+                    WHERE c.course_id = :course_id";
+    
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(":course_id", $course_id);
+            $stmt->execute();
+    
+            $courseData = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            if (!$courseData) {
+                return null;
+            }
+    
+            if ($courseData['course_type'] === 'video') {
+                $course = new VideoCours(
+                    $courseData['title'],
+                    $courseData['description'],
+                    $courseData['course_image'],
+                    $courseData['video_url'],
+                    $courseData['price'],
+                    $courseData['category_id'],
+                    $courseData['teacher_id']
+                );
+            } elseif ($courseData['course_type'] === 'document') {
+                $course = new DocumentCours(
+                    $courseData['title'],
+                    $courseData['description'],
+                    $courseData['course_image'],
+                    $courseData['document_content'],
+                    $courseData['price'],
+                    $courseData['category_id'],
+                    $courseData['teacher_id']
+                );
+            } else {
+                throw new Exception("Unknown course type: " . $courseData['course_type']);
+            }
+    
+            $course->id = $courseData['course_id'];
+            $course->personName = $courseData['prenom'] . " " . $courseData['nom'];
+            $course->creationdate = $courseData['date_creation'];
+            $course->cours_type = $courseData['course_type'];
+    
+            return $course;
+        } catch (PDOException $e) {
+            throw new Exception("Error while fetching the course: " . $e->getMessage());
+        }
+    }
 }
 
 class VideoCours extends Cours {
     private $videoUrl;
+    public $course_type;
 
     public function __construct($title, $description, $course_image, $videoUrl, $price, $category_id, $teacher_id) {
         parent::__construct($title, $description, $course_image, $price, $category_id, $teacher_id);
@@ -151,6 +262,7 @@ class VideoCours extends Cours {
                 $videoCourse->id = $cours['course_id'];
                 $videoCourse->personName = $cours['prenom'] . " " . $cours['nom'];
                 $videoCourse->creationdate = $cours['date_creation'];
+                $videoCourse->course_type = $cours['course_type'];
                 $courses[] = $videoCourse;
             }
 
@@ -161,6 +273,47 @@ class VideoCours extends Cours {
             return [];
         }
     }
+
+    static function getCourseById($course_id) {
+        $db = Dbconnection::getInstance()->getConnection();
+    
+        try {
+            $sql = "SELECT c.*, u.*
+                    FROM courses c
+                    LEFT JOIN users u ON c.teacher_id = u.user_id
+                    WHERE c.course_id = :course_id AND c.course_type = 'video'";
+    
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':course_id', $course_id);
+            $stmt->execute();
+    
+            $courseData = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            if ($courseData) {
+                $videoCourse = new VideoCours(
+                    $courseData['title'],
+                    $courseData['description'],
+                    $courseData['course_image'],
+                    $courseData['video_url'],
+                    $courseData['price'],
+                    $courseData['category_id'],
+                    $courseData['teacher_id']
+                );
+    
+                $videoCourse->id = $courseData['course_id'];
+                $videoCourse->personName = $courseData['prenom'] . " " . $courseData['nom'];
+                $videoCourse->creationdate = $courseData['date_creation'];
+    
+                return $videoCourse;
+            } else {
+                throw new Exception("No course found with ID: $course_id");
+            }
+    
+        } catch (PDOException $e) {
+            throw new Exception("Error while fetching course by ID: " . $e->getMessage());
+        }
+    }
+    
 }
 
 class DocumentCours extends Cours {
