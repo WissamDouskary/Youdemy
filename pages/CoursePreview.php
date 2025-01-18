@@ -30,7 +30,7 @@ $course = Cours::getCourseById($course_id);
                 <ul class="flex gap-9">
                     <a href="../index.php" class="hover:text-purple-600 transition-colors font-medium"><li>Home</li></a>
                     <a href="../pages/cours.php" class="hover:text-purple-600 transition-colors font-medium"><li>Courses</li></a>
-                    <a href="../pages/enrolledCours.php" class="text-purple-600 font-semibold"><li>My Enrolled</li></a>
+                    <a href="../pages/enrolledCours.php" class="hover:text-purple-600 transition-colors font-medium"><li>My Enrolled</li></a>
                 </ul>
                 
                 <?php if (!isset($_SESSION['user_role'])): ?>
