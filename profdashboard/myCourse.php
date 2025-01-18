@@ -104,7 +104,7 @@ if ($_SESSION['user_status'] === 'waiting') {
                             <span class="text-purple-600 font-bold"><?php echo $cours->getprice() ?></span>
                             <div class="flex space-x-2">
                                 <a href="../Handling/editCourseHandling.php?id=<?php echo $cours->getId() ?>"><button class="text-blue-600 hover:text-blue-800" >Edit</button></a>
-                                <button class="text-gray-600 hover:text-gray-800">Delete</button>
+                                <a href="../Handling/deletecoursehandling.php?id=<?php echo $cours->getId() ?>"><button class="text-gray-600 hover:text-gray-800">Delete</button></a>
                             </div>
                         </div>
                     </div>

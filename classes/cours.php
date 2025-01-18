@@ -424,6 +424,22 @@ abstract class Cours {
 
         return $result->total_enrolled_students;
     }
+
+    static function DeleteCourse($course_id){
+        $db = Dbconnection::getInstance()->getConnection();
+        try{
+        $sql = "DELETE FROM courses
+                WHERE course_id = :course_id";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':course_id', $course_id);
+
+        $stmt->execute();
+        }
+        catch(PDOException $e)  {
+            throw new Exception("THere is an error while Delete Course " . $e->getMessage());
+        }
+    }
 }
 
 class VideoCours extends Cours {
