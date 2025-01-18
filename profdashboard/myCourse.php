@@ -20,6 +20,7 @@ if ($_SESSION['user_status'] === 'waiting') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>YouDemy - My Courses</title>
 </head>
 <body class="bg-gray-50">
@@ -37,6 +38,26 @@ if ($_SESSION['user_status'] === 'waiting') {
             </div>
         </div>
     </nav>
+<?php
+    if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    $type = $message['type'];
+    $text = $message['text'];
+
+    echo "
+        <script>
+            Swal.fire({
+                icon: '$type',
+                title: '$type',
+                text: '$text',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    ";
+
+    unset($_SESSION['message']);
+}
+?>
 
     <div class="flex">
         <!-- Sidebar -->
@@ -87,7 +108,7 @@ if ($_SESSION['user_status'] === 'waiting') {
                         <div class="flex justify-between items-center">
                             <span class="text-purple-600 font-bold"><?php echo $cours->getprice() ?></span>
                             <div class="flex space-x-2">
-                                <button class="text-blue-600 hover:text-blue-800">Edit</button>
+                                <a href="../Handling/editCourseHandling.php?id=<?php echo $cours->getId() ?>"><button class="text-blue-600 hover:text-blue-800" >Edit</button></a>
                                 <button class="text-gray-600 hover:text-gray-800">Delete</button>
                             </div>
                         </div>

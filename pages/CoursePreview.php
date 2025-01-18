@@ -98,7 +98,7 @@ $course = Cours::getCourseById($course_id);
             <div class="rounded-lg mb-6">
                 <p><?php echo $course->getdocumentText(); ?></p>
             </div>
-        </div>
+            </div>
         <?php endif; ?>
         
 

@@ -84,6 +84,7 @@ abstract class Cours {
             return $courses;
         } catch (PDOException $e) {
             throw new Exception("Error while fetching all courses: " . $e->getMessage());
+            return [];
         }
     }
 
@@ -329,6 +330,84 @@ abstract class Cours {
         }
         
     }
+
+    static function updateCourse($course_id, $title, $description, $price, $category_id, $course_type, $content) {
+        $db = Dbconnection::getInstance()->getConnection();
+    
+        try {
+            $sql = "UPDATE courses 
+                    SET title = :title, description = :description,
+                        price = :price, category_id = :category_id, course_type = :course_type
+                    WHERE course_id = :course_id";
+            
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(":title", $title);
+            $stmt->bindParam(":description", $description);
+            $stmt->bindParam(":price", $price);
+            $stmt->bindParam(":category_id", $category_id);
+            $stmt->bindParam(":course_type", $course_type);
+            $stmt->bindParam(":course_id", $course_id);
+            $stmt->execute();
+    
+            if ($course_type == 'video') {
+                $sqlContent = "UPDATE courses SET video_url = :content WHERE course_id = :course_id";
+            } elseif ($course_type == 'document') {
+                $sqlContent = "UPDATE courses SET document_content = :content WHERE course_id = :course_id";
+            }
+    
+            if (isset($sqlContent)) {
+                $stmtContent = $db->prepare($sqlContent);
+                $stmtContent->bindParam(":content", $content);
+                $stmtContent->bindParam(":course_id", $course_id);
+                $stmtContent->execute();
+            }
+    
+            $sqlFetch = "SELECT c.*, u.prenom, u.nom, u.user_id 
+                         FROM courses c
+                         LEFT JOIN users u ON c.teacher_id = u.user_id
+                         WHERE c.course_id = :course_id";
+            
+            $stmtFetch = $db->prepare($sqlFetch);
+            $stmtFetch->bindParam(":course_id", $course_id);
+            $stmtFetch->execute();
+    
+            $courseData = $stmtFetch->fetch(PDO::FETCH_ASSOC);
+    
+            if ($courseData['course_type'] === 'video') {
+                $course = new VideoCours(
+                    $courseData['title'],
+                    $courseData['description'],
+                    $courseData['course_image'],
+                    $courseData['video_url'],
+                    $courseData['price'],
+                    $courseData['category_id'],
+                    $courseData['teacher_id']
+                );
+            } elseif ($courseData['course_type'] === 'document') {
+                $course = new DocumentCours(
+                    $courseData['title'],
+                    $courseData['description'],
+                    $courseData['course_image'],
+                    $courseData['document_content'],
+                    $courseData['price'],
+                    $courseData['category_id'],
+                    $courseData['teacher_id']
+                );
+            } else {
+                throw new Exception("Unknown course type.");
+            }
+    
+            $course->id = $courseData['course_id'];
+            $course->personName = $courseData['prenom'] . " " . $courseData['nom'];
+            $course->creationdate = $courseData['date_creation'];
+            $course->cours_type = $courseData['course_type'];
+    
+            return $course;
+    
+        } catch (PDOException $e) {
+            throw new Exception("Error while updating course: " . $e->getMessage());
+        }
+    }
 }
 
 class VideoCours extends Cours {
@@ -432,6 +511,9 @@ class VideoCours extends Cours {
                     $courseData['video_url'],
                     $courseData['price'],
                     $courseData['category_id'],
+
+
+
                     $courseData['teacher_id']
                 );
     
