@@ -1,4 +1,7 @@
 <?php
+require_once '../classes/Teacher.php';
+require_once '../classes/cours.php';
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
@@ -81,80 +84,35 @@ if (isset($_SESSION['message'])) {
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h3 class="text-gray-500 text-sm mb-1">Total Students</h3>
-                    <p class="text-3xl font-bold">1,234</p>
+                    <p class="text-3xl font-bold"><?php echo Teacher::GetTotalEnrolledStudents($_SESSION['user_id']) ?></p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-sm">
                     <h3 class="text-gray-500 text-sm mb-1">Active Courses</h3>
-                    <p class="text-3xl font-bold">12</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 class="text-gray-500 text-sm mb-1">Average Rating</h3>
-                    <p class="text-3xl font-bold">4.8</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <h3 class="text-gray-500 text-sm mb-1">Total Revenue</h3>
-                    <p class="text-3xl font-bold">$12,345</p>
+                    <p class="text-3xl font-bold"><?php echo Teacher::GetTotalCourses($_SESSION['user_id']) ?></p>
                 </div>
             </div>
-
-            <!-- Recent Activity -->
-            <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
-                <h2 class="text-xl font-bold mb-4">Recent Activity</h2>
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between border-b pb-4">
-                        <div>
-                            <p class="font-semibold">New enrollment in "Web Development"</p>
-                            <p class="text-gray-500">John Doe enrolled in your course</p>
-                        </div>
-                        <span class="text-gray-400">2 hours ago</span>
-                    </div>
-                    <div class="flex items-center justify-between border-b pb-4">
-                        <div>
-                            <p class="font-semibold">New Review</p>
-                            <p class="text-gray-500">5★ review on "Python Basics"</p>
-                        </div>
-                        <span class="text-gray-400">5 hours ago</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="font-semibold">Course Completion</p>
-                            <p class="text-gray-500">3 students completed "JavaScript Advanced"</p>
-                        </div>
-                        <span class="text-gray-400">1 day ago</span>
-                    </div>
-                </div>
-            </div>
-
             <!-- Popular Courses -->
             <div class="bg-white p-6 rounded-lg shadow-sm">
                 <h2 class="text-xl font-bold mb-4">Your Popular Courses</h2>
                 <div class="space-y-4">
+
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <img src="/api/placeholder/80/80" alt="Course" class="w-12 h-12 rounded object-cover mr-4"/>
+                        <div>
+                        <?php 
+                        $cours = Teacher::GetMostEnrolledCourses($_SESSION['user_id']);
+                        foreach($cours as $cour){
+                        ?>
+                        <div class="flex items-center mb-2">
+                            <img src="<?php echo $cour->courseimage ?>" alt="Course" class="w-12 h-12 rounded object-cover mr-4"/>
                             <div>
-                                <p class="font-semibold">Complete Web Development</p>
-                                <p class="text-gray-500">789 students</p>
+                                <p class="font-semibold"><?php echo $cour->title ?></p>
+                                <p class="text-gray-500"><?php echo $cour->enrollments_count ?> students</p>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <p class="font-semibold text-green-600">$4,563</p>
-                            <p class="text-gray-500">Revenue</p>
+                        <?php } ?>
                         </div>
                     </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <img src="/api/placeholder/80/80" alt="Course" class="w-12 h-12 rounded object-cover mr-4"/>
-                            <div>
-                                <p class="font-semibold">Python Basics</p>
-                                <p class="text-gray-500">645 students</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="font-semibold text-green-600">$3,876</p>
-                            <p class="text-gray-500">Revenue</p>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

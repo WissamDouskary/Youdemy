@@ -408,6 +408,22 @@ abstract class Cours {
             throw new Exception("Error while updating course: " . $e->getMessage());
         }
     }
+
+    
+    static function GetTotalEnrolledStudents() {
+       
+        $db = Dbconnection::getInstance()->getConnection();
+
+        $sql = "SELECT COUNT(student_id) AS total_enrolled_students
+                FROM enrollments";
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+        return $result->total_enrolled_students;
+    }
 }
 
 class VideoCours extends Cours {

@@ -76,13 +76,6 @@ if ($_SESSION['user_status'] === 'waiting') {
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-2xl font-bold">My Courses</h1>
                 <div class="flex space-x-4">
-                    <input type="text" placeholder="Search courses..." class="border p-2 rounded-md"/>
-                    <select class="border p-2 rounded-md">
-                        <option>All Categories</option>
-                        <option>Programming</option>
-                        <option>Design</option>
-                        <option>Business</option>
-                    </select>
                 </div>
             </div>
 
@@ -91,7 +84,9 @@ if ($_SESSION['user_status'] === 'waiting') {
                 <!-- Course Card 1 -->
                  <?php 
                 $courses = Cours::showspecificsCours($_SESSION['user_id']);
+                
                 foreach($courses as $cours){
+                    $counts = Cours::CountenrollCourses($cours->getId());
                  ?>
                 <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                     <img src="<?php echo $cours->getcourseImage()?>" alt="Course thumbnail" class="w-full h-48 object-cover"/>
@@ -100,7 +95,7 @@ if ($_SESSION['user_status'] === 'waiting') {
                             <h3 class="font-semibold"><?php echo $cours->gettitle() ?></h3>
                         </div>
                         <div class="flex items-center mb-4">
-                            <span class="text-gray-600">789 students</span>
+                            <span class="text-gray-600"><?php echo $counts['enroll_Count']  ?> students</span>
                             <span class="text-gray-400 mx-2">•</span>
                             <?php  ?>
                             <span class="text-gray-600"></span>
