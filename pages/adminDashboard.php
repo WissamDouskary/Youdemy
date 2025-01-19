@@ -18,15 +18,17 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 1) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" integrity="sha512-9UR1ynHntZdqHnwXKTaOm1s6V9fExqejKvg5XMawEMToW4sSw+3jtLrYfZPijvnwnnE8Uol1O9BcAskoxgec+g==" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        <!-- DataTables CDN (CSS) -->
-        <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css" />
+    <!-- DataTables CDN (CSS) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css" />
 
 <!-- jQuery and DataTables JS (JavaScript) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/2.2.1/js/dataTables.min.js"></script>
 
 
@@ -46,6 +48,32 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 1) {
             height: 100%;
             background-color: rgba(0,0,0,0.5);
         }
+        .bootstrap-tagsinput {
+            display: flex;
+            flex-wrap: wrap;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 2px 8px;
+            min-height: 36px;
+            z-index: 9999;
+        }
+
+        .bootstrap-tagsinput .tag {
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            margin: 2px;
+            padding: 4px 8px;
+        }
+
+        .bootstrap-tagsinput input {
+            border: none;
+            outline: none;
+            min-width: 120px;
+            margin: 2px;
+        }
+
+
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -112,6 +140,15 @@ if (isset($_SESSION['message'])) {
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
                 Add Category
+            </button>
+        </div>
+
+        <div class="mb-6 flex space-x-4">
+            <button onclick="openModal('addtagsModal')" class="bg-primary px-4 py-2 rounded-lg hover:bg-purpel-500 flex items-center text-white">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Add Tags
             </button>
         </div>
 
@@ -313,8 +350,28 @@ if (isset($_SESSION['message'])) {
         </div>
     </div>
 
+    <!-- Add tags Modal -->
+    <div id="addtagsModal" class="modal z-50">
+        <div class="bg-white rounded-lg w-1/3 mx-auto my-auto p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Add New tags</h3>
+                <button onclick="closeModal('addtagsModal')" class="text-gray-500 hover:text-gray-700">×</button>
+            </div>
+            <form class="space-y-4" method="POST" action="../Handling/tagHandling.php">
+                <div>
+                    <label class="block text-sm font-medium mb-1">tags Name</label>
+                    <input type="text" name="tag_name" id="tagsInput" class="w-full border rounded-lg p-2">
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button" onclick="closeModal('addtagsModal')" class="px-4 py-2 border rounded-lg">Cancel</button>
+                    <button type="submit" name="tags_submit" class="px-4 py-2 text-white bg-primary rounded-lg">Add tags</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
     
     <script>
         function openModal(modalId) {
@@ -324,6 +381,11 @@ if (isset($_SESSION['message'])) {
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
         }
+
+        $(document).ready(function () {
+
+$('#tagsInput').tagsinput();
+});
 
         $(document).ready(function() {
         
@@ -352,7 +414,8 @@ if (isset($_SESSION['message'])) {
             "info": true,
             "autoWidth": false,
         });
-    });
+});
+
     </script>
 </body>
 </html>
