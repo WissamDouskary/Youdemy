@@ -180,7 +180,7 @@ if (isset($_SESSION['message'])) {
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center space-x-6">
-                            <button class="text-red-600 hover:text-red-800 transition-colors duration-200">Delete</button>
+                            <a href="../Handling/deletecategorieHandl.php?id=<?php echo $row['category_id'] ?>"><button class="text-red-600 hover:text-red-800 transition-colors duration-200">Delete</button></a>
                         </div>
                     </td>
                 </tr>
@@ -274,33 +274,6 @@ if (isset($_SESSION['message'])) {
                     </tbody>
                     <?php } ?>
                 </table>
-            </div>
-        </div>
-
-        <!-- Recent Reports -->
-        <div class="bg-white p-6 rounded-lg shadow-sm">
-            <h2 class="text-xl font-bold mb-4">Recent Reports</h2>
-            <div class="space-y-4">
-                <div class="flex items-center justify-between border-b pb-4">
-                    <div>
-                        <p class="font-semibold">Content Report</p>
-                        <p class="text-gray-500">Report on "JavaScript Basics" course</p>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <button class="bg-red-100 text-red-600 px-3 py-1 rounded-md">Review</button>
-                        <span class="text-gray-400">2 hours ago</span>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="font-semibold">Payment Issue</p>
-                        <p class="text-gray-500">Failed payment for course enrollment</p>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <button class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-md">Pending</button>
-                        <span class="text-gray-400">5 hours ago</span>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
