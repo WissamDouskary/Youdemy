@@ -131,7 +131,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
                 <div id="results" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                    <!-- Course Card 1 -->
                 <?php 
-                $cours = VideoCours::showAllCours();
+                $cours = Cours::showAllCours();
                 foreach($cours as $cour){
                 ?>
                 <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">

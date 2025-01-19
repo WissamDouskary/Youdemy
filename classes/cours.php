@@ -70,8 +70,6 @@ abstract class Cours {
                         $cours['category_id'], 
                         $cours['teacher_id']
                     );
-                } else {
-                    continue;
                 }
 
                 $course->id = $cours['course_id'];
@@ -423,6 +421,21 @@ abstract class Cours {
         $result = $stmt->fetch(PDO::FETCH_OBJ);
 
         return $result->total_enrolled_students;
+    }
+
+    static function GetTotalCourses() {
+       
+        $db = Dbconnection::getInstance()->getConnection();
+
+        $sql = "SELECT COUNT(course_id) AS total_Courses
+                FROM courses";
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+        return $result->total_Courses;
     }
 
     static function DeleteCourse($course_id){

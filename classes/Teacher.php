@@ -70,5 +70,20 @@ class Teacher extends User {
 
         return $result->total_courses;
     }
+
+    static function totalTeachers(){
+        $db = Dbconnection::getInstance()->getConnection();
+
+        $sql = "SELECT COUNT(user_id) AS total_teacher
+                FROM users
+                WHERE role_id = 2";
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+        return $result->total_teacher;
+    }
 }
 ?>
