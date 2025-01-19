@@ -3,6 +3,7 @@ require_once '../classes/admin.php';
 require_once '../classes/category.php';
 require_once '../classes/cours.php';
 require_once '../classes/Teacher.php';
+require_once '../classes/Tag.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
@@ -139,6 +140,43 @@ if (isset($_SESSION['message'])) {
                     <td class="px-6 py-4 text-sm text-gray-900 pr-28"><?php echo $row['category_id'] ?></td>
                     <td class="px-6 py-4">
                         <span class="text-sm font-medium text-gray-900 pr-60"><?php echo $row['name'] ?></span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center space-x-6">
+                            <button class="text-red-600 hover:text-red-800 transition-colors duration-200">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- tags Table -->
+<div class="bg-white rounded-lg shadow-md mt-6 mb-6">
+    <div class="p-6 border-b border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-800">tags Management</h2>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full display" id="tagstable" >
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <?php
+                $rows = Tag::showalltags();
+                 foreach($rows as $row) { 
+                ?>
+                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                    <td class="px-6 py-4 text-sm text-gray-900 pr-28"><?php echo $row->getid() ?></td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-medium text-gray-900 pr-60"><?php echo $row->getname() ?></span>
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center space-x-6">
@@ -304,6 +342,15 @@ if (isset($_SESSION['message'])) {
             "lengthChange": false,
             "info": true,
             "autoWidth": false
+        });
+
+        $('#tagstable').DataTable({
+            "paging": true,
+            "ordering": true,
+            "searching": true,
+            "lengthChange": false,
+            "info": true,
+            "autoWidth": false,
         });
     });
     </script>

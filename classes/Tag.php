@@ -73,6 +73,32 @@ Class Tag {
         throw new Exception('there is an error while show course tags' . $e->getMessage());
         return [];
     }
+
 }
+
+    static function showalltags(){
+        $db = Dbconnection::getInstance()->getConnection();
+
+        try{
+            $sql = "SELECT * FROM tags";
+
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+
+            $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $alltags = [];
+
+            foreach($tags as $tag){
+                $alltags[] = new Tag($tag['name']);
+            }
+
+            return $alltags;
+        }
+        catch(PDOException $e){
+            throw new Exception('There is an error while show all tags' . $e->getMessage());
+            return [];
+        }
+    }
 }
 ?>
