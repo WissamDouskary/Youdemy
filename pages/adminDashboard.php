@@ -1,6 +1,8 @@
 <?php
 require_once '../classes/admin.php';
 require_once '../classes/category.php';
+require_once '../classes/cours.php';
+require_once '../classes/Teacher.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
@@ -18,6 +20,16 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 1) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- DataTables CDN (CSS) -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css" />
+
+<!-- jQuery and DataTables JS (JavaScript) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/2.2.1/js/dataTables.min.js"></script>
+
+
+
     <title>YouDemy - Admin Dashboard</title>
     <style>
         .bg-primary { background-color: #7b39ed; }
@@ -81,19 +93,15 @@ if (isset($_SESSION['message'])) {
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div class="bg-white p-6 rounded-lg shadow-sm">
                 <h3 class="text-gray-500 text-sm mb-1">Total Users</h3>
-                <p class="text-3xl font-bold">15,234</p>
+                <p class="text-3xl font-bold"><?php echo Cours::GetTotalEnrolledStudents(); ?></p>
             </div>
             <div class="bg-white p-6 rounded-lg shadow-sm">
                 <h3 class="text-gray-500 text-sm mb-1">Total Courses</h3>
-                <p class="text-3xl font-bold">456</p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-                <h3 class="text-gray-500 text-sm mb-1">Total Revenue</h3>
-                <p class="text-3xl font-bold">$123,456</p>
+                <p class="text-3xl font-bold"><?php echo Cours::GetTotalCourses(); ?></p>
             </div>
             <div class="bg-white p-6 rounded-lg shadow-sm">
                 <h3 class="text-gray-500 text-sm mb-1">Active Instructors</h3>
-                <p class="text-3xl font-bold">89</p>
+                <p class="text-3xl font-bold"><?php echo Teacher::totalTeachers(); ?></p>
             </div>
         </div>
 
@@ -114,7 +122,7 @@ if (isset($_SESSION['message'])) {
     </div>
 
     <div class="overflow-x-auto">
-        <table class="w-full">
+        <table class="w-full display" id="categoriestable" >
             <thead class="bg-gray-50">
                 <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
@@ -130,11 +138,10 @@ if (isset($_SESSION['message'])) {
                 <tr class="hover:bg-gray-50 transition-colors duration-200">
                     <td class="px-6 py-4 text-sm text-gray-900 pr-28"><?php echo $row['category_id'] ?></td>
                     <td class="px-6 py-4">
-                        <span class="text-sm font-medium text-gray-900 pr-20"><?php echo $row['name'] ?></span>
+                        <span class="text-sm font-medium text-gray-900 pr-60"><?php echo $row['name'] ?></span>
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center space-x-6">
-                            <button class="text-green-600 hover:text-green-800 transition-colors duration-200">Edit</button>
                             <button class="text-red-600 hover:text-red-800 transition-colors duration-200">Delete</button>
                         </div>
                     </td>
@@ -149,10 +156,10 @@ if (isset($_SESSION['message'])) {
         <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
             <h2 class="text-xl font-bold mb-4">Recent Users</h2>
             <div class="overflow-x-auto">
-                <table class="w-full">
+                <table class="w-full" id="user-table">
                     <thead>
                         <tr class="text-left text-gray-500">
-                            <th class="pb-4">User</th>
+                            <th class="pb-4">Name</th>
                             <th class="pb-4">Role</th>
                             <th class="pb-4">Status</th>
                             <th class="pb-4">Actions</th>
@@ -242,6 +249,35 @@ if (isset($_SESSION['message'])) {
             </form>
         </div>
     </div>
+
+    <!-- Scripts at the bottom of the body -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.1/js/dataTables.min.js"></script>
+
+
+    <!-- Add Category Modal -->
+    <div id="addCategoryModal" class="modal z-50">
+        <div class="bg-white rounded-lg w-1/3 mx-auto my-auto p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Add New Category</h3>
+                <button onclick="closeModal('addCategoryModal')" class="text-gray-500 hover:text-gray-700">×</button>
+            </div>
+            <form class="space-y-4" method="POST" action="../Handling/categoryHandl.php">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Category Name</label>
+                    <input type="text" name="cat_name" class="w-full border rounded-lg p-2">
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button" onclick="closeModal('addCategoryModal')" class="px-4 py-2 border rounded-lg">Cancel</button>
+                    <button type="submit" name="Category_submit" class="px-4 py-2 text-white bg-primary rounded-lg">Add Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+    
     <script>
         function openModal(modalId) {
             document.getElementById(modalId).classList.add('active');
@@ -250,6 +286,26 @@ if (isset($_SESSION['message'])) {
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
         }
+
+        $(document).ready(function() {
+        
+        $('#categoriestable').DataTable({
+            "paging": true,
+            "ordering": true,
+            "searching": true,
+            "lengthChange": false,
+            "info": true,
+            "autoWidth": false
+        });
+        $('#user-table').DataTable({
+            "paging": true,
+            "ordering": true,
+            "searching": true,
+            "lengthChange": false,
+            "info": true,
+            "autoWidth": false
+        });
+    });
     </script>
 </body>
 </html>
