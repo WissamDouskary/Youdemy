@@ -6,6 +6,12 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+$coursperpage = 6;
+
+$thisPage = isset($_GET['page']) ? $_GET['page'] : 1;
+$startIn = ($thisPage - 1) * $coursperpage;
+$result = Cours::fetchdataforcurrentpage($startIn, $coursperpage);
+
 if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') {
     
 }
@@ -17,7 +23,6 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>LearnHub - Course Catalog</title>
 </head>
@@ -132,7 +137,7 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
                    <!-- Course Card 1 -->
                 <?php 
                 $cours = Cours::showAllCours();
-                foreach($cours as $cour){
+                foreach($result as $cour){
                 ?>
                 <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
                     <!-- Course Thumbnail -->
@@ -206,18 +211,30 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
                 </div>
 
                 <!-- Pagination -->
-                <div class="flex justify-center mt-8">
-                    <nav class="flex items-center space-x-2">
-                        <button class="px-3 py-2 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200">Previous</button>
-                        <button class="px-3 py-2 rounded-md bg-purple-600 text-white">1</button>
-                        <button class="px-3 py-2 rounded-md hover:bg-gray-100">2</button>
-                        <button class="px-3 py-2 rounded-md hover:bg-gray-100">3</button>
-                        <button class="px-3 py-2 rounded-md hover:bg-gray-100">4</button>
-                        <button class="px-3 py-2 rounded-md hover:bg-gray-100">5</button>
-                        <button class="px-3 py-2 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200">Next</button>
-                    </nav>
-                </div>
-            </div>
+                <?php
+                $totalcountpages = Cours::countPagesForPagination();
+                $totalPages = ($coursperpage > 0) ? ceil($totalcountpages / $coursperpage) : 0;
+                
+                if ($totalPages > 0) {
+                    echo "<div class='flex justify-center space-x-2 mt-8'>";
+                
+                    if ($thisPage > 1) {
+                        echo "<a href='?page=" . ($thisPage - 1) . "'><button class='px-3 py-2 rounded-md bg-gray-100'>Previous</button></a>";
+                    }
+                
+                    for ($page = 1; $page <= $totalPages; $page++) {
+                        $active = ($page == $thisPage) ? "bg-purple-500 text-white" : "bg-gray-100";
+                        echo "<a href='?page=$page'><button class='px-3 py-2 rounded-md $active'>$page</button></a>";
+                    }
+                
+                    if ($thisPage < $totalPages) {
+                        echo "<a href='?page=" . ($thisPage + 1) . "'><button class='px-3 py-2 rounded-md bg-gray-100'>Next</button></a>";
+                    }
+                
+                    echo "</div>";
+                }
+                
+                ?>
         </div>
     </div>
 </body>

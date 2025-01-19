@@ -453,6 +453,78 @@ abstract class Cours {
             throw new Exception("THere is an error while Delete Course " . $e->getMessage());
         }
     }
+
+    static function fetchdataforcurrentpage($startIn, $coursesParPage) {
+        $db = Dbconnection::getInstance()->getConnection();
+        try{
+        $sql = "SELECT c.*, ct.name, u.prenom, u.nom
+                FROM courses c
+                LEFT JOIN categories ct ON c.category_id = ct.category_id 
+                LEFT JOIN users u ON u.user_id = c.teacher_id
+                LIMIT $startIn, $coursesParPage";
+
+        $stmt = $db->prepare($sql);
+    
+        $stmt->execute();
+            
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $courses = [];
+
+        foreach($result as $cour){
+            if ($cour['course_type'] === 'video') {
+                $cours = new VideoCours(
+                    $cour['title'],
+                    $cour['description'],
+                    $cour['course_image'],
+                    $cour['video_url'],
+                    $cour['price'],
+                    $cour['category_id'],
+                    $cour['teacher_id']
+                );
+            } elseif ($cour['course_type'] === 'document') {
+                $cours = new DocumentCours(
+                    $cour['title'],
+                    $cour['description'],
+                    $cour['course_image'],
+                    $cour['document_content'],
+                    $cour['price'],
+                    $cour['category_id'],
+                    $cour['teacher_id']
+                );
+            }
+            $cours->id = $cour['course_id'];
+            $cours->personName = $cour['prenom'] . " " . $cour['nom'];
+            $cours->creationdate = $cour['date_creation'];
+            $cours->cours_type = $cour['course_type'];
+
+            $courses[] = $cours;
+    
+        }
+
+        return $courses;
+        }
+        catch(PDOException $e){
+            throw new Exception('there is an error while fetch data for current page' . $e->getMessage());
+        }
+    }
+
+    static function countPagesForPagination(){
+        $db = Dbconnection::getInstance()->getConnection();
+        try{
+        $totlasql = "SELECT COUNT(*) AS total FROM courses";
+        $stmt = $db->prepare($totlasql);
+    
+        $stmt->execute();
+    
+        $totalRecordsRow = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        return $totalRecordsRow['total'];
+        }
+        catch(PDOException $e){
+            throw new Exception('There is an error on count pages for pagination ' . $e->getMessage());
+        }
+    }
 }
 
 class VideoCours extends Cours {
