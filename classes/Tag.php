@@ -4,6 +4,7 @@ require_once '../classes/conn.php';
 Class Tag {
     private $id;
     private $name;
+    public $tag_id;
 
     function __construct($name){
         $this->name = $name;
@@ -90,7 +91,10 @@ Class Tag {
             $alltags = [];
 
             foreach($tags as $tag){
-                $alltags[] = new Tag($tag['name']);
+                $tagi = new Tag($tag['name']);
+
+                $tagi->tag_id = $tag['tag_id'];
+                $alltags[] = $tagi;
             }
 
             return $alltags;
@@ -100,5 +104,24 @@ Class Tag {
             return [];
         }
     }
+
+    static function deleteTag($tag_id){
+        $db = Dbconnection::getInstance()->getConnection();
+
+        try{
+            $sql = "DELETE FROM tags
+                    WHERE tag_id = :tagid";
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':tagid', $tag_id);
+            $stmt->execute();
+        }
+        catch(PDOException $e){
+            throw new Exception('There is an error while show all tags' . $e->getMessage());
+            return [];
+        }
+    }
+
+
 }
 ?>
