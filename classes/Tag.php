@@ -117,7 +117,7 @@ Class Tag {
             $stmt->execute();
         }
         catch(PDOException $e){
-            throw new Exception('There is an error while show all tags' . $e->getMessage());
+            throw new Exception('There is an error while delete tag' . $e->getMessage());
             return [];
         }
     }

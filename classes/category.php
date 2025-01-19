@@ -68,6 +68,23 @@ class Category {
             throw new Exception('Error while retrieving categories');
         }
     }
+
+    static function deleteCategory($cat_id){
+        $db = Dbconnection::getInstance()->getConnection();
+
+        try{
+            $sql = "DELETE FROM categories
+                    WHERE category_id = :category_id";
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':category_id', $cat_id);
+            $stmt->execute();
+        }
+        catch(PDOException $e){
+            throw new Exception('There is an error while delete categorie' . $e->getMessage());
+            return [];
+        }
+    }
 } 
 
 ?>
