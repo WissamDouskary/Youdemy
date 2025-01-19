@@ -174,13 +174,13 @@ if (isset($_SESSION['message'])) {
                  foreach($rows as $row) { 
                 ?>
                 <tr class="hover:bg-gray-50 transition-colors duration-200">
-                    <td class="px-6 py-4 text-sm text-gray-900 pr-28"><?php echo $row->getid() ?></td>
+                    <td class="px-6 py-4 text-sm text-gray-900 pr-28"><?php echo $row->tag_id ?></td>
                     <td class="px-6 py-4">
                         <span class="text-sm font-medium text-gray-900 pr-60"><?php echo $row->getname() ?></span>
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center space-x-6">
-                            <button class="text-red-600 hover:text-red-800 transition-colors duration-200">Delete</button>
+                            <a href="../Handling/deletetaghandling.php?id=<?php echo $row->tag_id ?>"><button class="text-red-600 hover:text-red-800 transition-colors duration-200">Delete</button></a>
                         </div>
                     </td>
                 </tr>
