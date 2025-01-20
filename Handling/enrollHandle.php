@@ -26,9 +26,9 @@ if(isset($_GET['course_id']) && $_SESSION['user_id']){
         exit();
     }
 }else{
-    $_SESSION['message'] = [
-        'type' => 'error',
-        'text' => "please sign up or login to your account to Enrolle course!"
+    $_SESSION['Log'] = [
+        'type' => 'You need an account!',
+        'text' => "Please register or log in to enroll in this course."
     ];
     header('Location: ../pages/cours.php');
     exit();

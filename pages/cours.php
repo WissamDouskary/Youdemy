@@ -101,6 +101,33 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
     }
 ?>
 
+<?php 
+if (isset($_SESSION['Log'])) {
+    $message = $_SESSION['Log'];
+    $type = $message['type'];
+    $text = $message['text'];
+
+    echo "<script>
+        Swal.fire({
+            title: '$type',
+            text: '$text',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Register',
+            cancelButtonText: 'Log In'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '../pages/sign_up.php';
+            } else if (result.isDismissed) {
+                window.location.href = '../pages/login.php';
+            }
+        });
+    </script>";
+
+    unset($_SESSION['Log']);
+}
+?>
+
 
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 py-8">
@@ -201,9 +228,14 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_status'] === 'suspended') 
                         <!-- Price and Enroll Button -->
                         <div class="flex items-center justify-between mt-4">
                             <span class="text-lg font-bold text-purple-600"><?php echo $cour->getprice() ?>$</span>
+                            <div>
+                            <a href="../pages/course_firstPreview.php?course_id=<?php echo $cour->getId()?>"><button class="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
+                                View
+                            </button></a>
                             <a href="../Handling/enrollHandle.php?course_id=<?php echo $cour->getId()?>"><button class="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
                                 Enroll Now
                             </button></a>
+                            </div>
                         </div>
                     </div>
                 </div>
