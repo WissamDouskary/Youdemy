@@ -1,5 +1,6 @@
 <?php
 require_once '../classes/cours.php';
+require_once '../classes/Etudiant.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
@@ -114,7 +115,7 @@ if (isset($_SESSION['user_status']) && isset($_SESSION['user_role'])) {
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Course Card -->
             <?php 
-            $courses = Cours::getEnrolledCourses($_SESSION['user_id']);
+            $courses = Etudiant::getEnrolledCourses($_SESSION['user_id']);
             foreach($courses as $cour){
             ?>
             <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
