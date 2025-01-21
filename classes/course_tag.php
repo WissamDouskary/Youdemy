@@ -10,7 +10,7 @@ class CourseTag {
         $this->course_id = $course_id;
     }
 
-    function addTagToArticle(){
+    function addTagTocours(){
         $db = Dbconnection::getInstance()->getConnection();
         try{
         $sql = "INSERT INTO course_tags (course_id, tag_id)
@@ -24,7 +24,7 @@ class CourseTag {
         $stmtt->execute();
         }
         catch(PDOException $e){
-            throw new Exception('there is an error while add tag to article on course_tag.php' . $e->getMessage());
+            throw new Exception('there is an error while add tag to cours on course_tag.php' . $e->getMessage());
         }
 
     }
