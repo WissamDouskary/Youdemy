@@ -45,7 +45,7 @@ if (isset($_POST['CreateCourseSub'])) {
                     $tag_ids = Tag::addMultipleTags($tags);
                     foreach ($tag_ids as $tagID) {
                         $coursetag = new CourseTag($tagID, $course_id);
-                        $coursetag->addTagToArticle();
+                        $coursetag->addTagTocours();
                     }
                     $_SESSION['message'] = [
                         'type' => 'success',
@@ -94,7 +94,7 @@ if (isset($_POST['CreateCourseSub'])) {
                     $tag_ids = Tag::addMultipleTags($tags);
                     foreach ($tag_ids as $tagID) {
                         $coursetag = new CourseTag($tagID, $course_id);
-                        $coursetag->addTagToArticle();
+                        $coursetag->addTagTocours();
                     }
                     $_SESSION['message'] = [
                         'type' => 'success',
