@@ -55,7 +55,7 @@ if (isset($_POST['signinsubmit'])) {
             if($user->getrole() == 2){
                 $_SESSION['message'] = [
                     'type' => 'success',
-                    'text' => 'Welcome Instructor!'
+                    'text' => 'Welcome back Instructor!'
                 ];
                 header('Location: ../pages/prof_dashboard.php');
                 exit();
