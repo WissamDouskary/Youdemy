@@ -62,7 +62,7 @@ if (isset($_POST['signinsubmit'])) {
             }
             $_SESSION['message'] = [
                 'type' => 'success',
-                'text' => 'Welcome back!'
+                'text' => 'Welcome back Student!'
             ];
             header('Location: ../index.php');
             exit;
