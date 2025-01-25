@@ -47,7 +47,7 @@ if (isset($_POST['signinsubmit'])) {
             if($user->getrole() == 1){
                 $_SESSION['message'] = [
                     'type' => 'success',
-                    'text' => 'Welcome Admin!'
+                    'text' => 'Welcome back Admin!'
                 ];
                 header('Location: ../pages/adminDashboard.php');
                 exit();
