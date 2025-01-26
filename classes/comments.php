@@ -6,6 +6,7 @@ class comments {
     private $content;
     private $user_id;
     private $course_id;
+    public $comUser;
 
     // getters
     public function getCommentId(){return $this->comment_id;}
@@ -46,6 +47,36 @@ class comments {
             }
         } catch (PDOException $e) {
             throw new Exception('there is an error while adding comment to db' . $e->getMessage());
+        }
+    }
+
+    static function showComments($course_id){
+        $db = Dbconnection::getInstance()->getConnection();
+
+        try {
+            $sql = 'SELECT c.*, CONCAT(u.prenom , " " , u.nom) as username
+                    FROM comments c 
+                    JOIN users u ON u.user_id = c.user_id
+                    WHERE c.course_id = :course_id';
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam('course_id', $course_id);
+            $stmt->execute();
+
+            $comData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $comArr = [];
+
+            foreach ($comData as $com ){
+                $comment = new comments($com['comments_id'], $com['content'], $com['user_id'], $com['course_id']);
+                $comment->comUser = $com['username'];
+                $comArr[] = $comment;
+            }
+
+            return $comArr;
+        }
+        catch (PDOException $e){
+            throw new Exception('there is an error while show comments' . $e->getMessage());
+            return [];
         }
     }
 
