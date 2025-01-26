@@ -1,6 +1,7 @@
 <?php
 require_once '../classes/cours.php';
 require_once '../classes/Tag.php';
+require_once '../classes/comments.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -143,11 +144,15 @@ if($course_id == null){
                 <!-- Comments List -->
                 <div class="space-y-6 bg-white rounded-lg border border-gray-200 p-6 mt-6">
                     <!-- Single Comment -->
+                        <?php
+                        $comms = comments::showComments($course_id);
+                        foreach ($comms as $com){
+                        ?>
                         <div class="border-b pb-6">
                             <div class="flex items-center justify-between mb-2">
                                 <div class="flex items-center space-x-3">
                                     <div class="">
-                                        <p class="font-semibold">said</p>
+                                        <p class="font-semibold"><?php echo $com->comUser ?></p>
                                     </div>
                                 </div>
                                     <div class="flex space-x-2 text-sm">
@@ -155,9 +160,11 @@ if($course_id == null){
                                     </div>
                             </div>
                             <p class="text-gray-600">
-                               lkomontiiir
+                               <?php echo $com->getContent() ?>
                             </p>
                         </div>
+                    <?php }
+                    ?>
                 </div>
             </div>
 
