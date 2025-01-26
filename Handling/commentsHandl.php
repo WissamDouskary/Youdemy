@@ -7,6 +7,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $user_id = $_SESSION['user_id'];
     $content = $_POST['typedcomment'];
 
+    if(empty($content)){
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => "please enter a valid content"
+        ];
+        header('Location: ../pages/CoursePreview.php?course_id='.$course_id);
+        exit();
+    }
+
     try {
         $comment = new comments(null, $content, $user_id, $course_id);
         $comment->save();
