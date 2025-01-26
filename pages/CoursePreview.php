@@ -110,9 +110,10 @@ if($course_id == null){
 
                 <div class="bg-white rounded-lg border border-gray-200 p-6 mt-6">
                     <h2 class="text-xl font-bold mb-4">Submit comment</h2>
-                    <form action="../handling/commentsHandl.php" method="POST" class="flex flex-col gap-6 justify-center items-start">
+                    <form action="../Handling/commentsHandl.php" method="POST" class="flex flex-col gap-6 justify-center items-start">
                         <textarea type="text" class="w-full border border-gray-400 h-40 rounded-lg outline-none p-2 focus:border-purple-400" placeholder="add comment ..." name="typedcomment"></textarea>
                         <input type="submit" value="Comment" class="p-2 bg-purple-600 text-white rounded-full px-6 cursor-pointer">
+                        <input type="hidden" value="<?php echo $course_id ?>" name="course_id">
                     </form>
                 </div>
 
