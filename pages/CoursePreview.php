@@ -8,9 +8,14 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $course_id = $_GET['course_id'] ?? null;
 $course = Cours::getCourseById($course_id);
+
+if($course_id == null){
+    header('Location: ../index.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -79,7 +84,7 @@ $course = Cours::getCourseById($course_id);
             <div class="lg:w-2/3">
                 <?php if($course->cours_type == 'video'):  ?>
                 <!-- Video Player -->
-                <div class="bg-black rounded-lg overflow-hidden mb-8 sticky top-20">
+                <div class="bg-black rounded-lg overflow-hidden mb-8 ">
                     <div class="aspect-video">
                         <video class="w-full h-full" controls>
                             <source src="<?php echo $course->getvedioUrl(); ?>" type="video/mp4">
@@ -102,11 +107,39 @@ $course = Cours::getCourseById($course_id);
                         <p class="text-gray-700 leading-relaxed"><?php echo htmlspecialchars($course->getdescription(), ENT_QUOTES, 'UTF-8'); ?></p>
                     </div>
                 </div>
+
+                <div class="bg-white rounded-lg border border-gray-200 p-6 mt-6">
+                    <h2 class="text-xl font-bold mb-4">Submit comment</h2>
+                    <form action="../handling/commentsHandl.php" method="POST" class="flex flex-col gap-6 justify-center items-start">
+                        <textarea type="text" class="w-full border border-gray-400 h-40 rounded-lg outline-none p-2 focus:border-purple-400" placeholder="add comment ..." name="typedcomment"></textarea>
+                        <input type="submit" value="Comment" class="p-2 bg-purple-600 text-white rounded-full px-6 cursor-pointer">
+                    </form>
+                </div>
+
+                <!-- Comments List -->
+                <div class="space-y-6 bg-white rounded-lg border border-gray-200 p-6 mt-6">
+                    <!-- Single Comment -->
+                        <div class="border-b pb-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center space-x-3">
+                                    <div class="">
+                                        <p class="font-semibold">said</p>
+                                    </div>
+                                </div>
+                                    <div class="flex space-x-2 text-sm">
+                                        <a href="../handling/delete_comment.php?comment_id=&article_name="><button class="text-red-500 hover:text-red-700">Delete</button></a>
+                                    </div>
+                            </div>
+                            <p class="text-gray-600">
+                               lkomontiiir
+                            </p>
+                        </div>
+                </div>
             </div>
 
             <!-- Right Column - Course Details -->
             <div class="lg:w-1/3">
-                <div class="bg-white rounded-lg border border-gray-200 p-6 sticky top-20">
+                <div class="bg-white rounded-lg border border-gray-200 p-6">
                     <h3 class="text-lg font-bold mb-4">Course Content</h3>
                     
                     <!-- Course Features -->

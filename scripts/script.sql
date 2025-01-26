@@ -38,6 +38,33 @@ CREATE TABLE courses (
     FOREIGN KEY (teacher_id) REFERENCES users(user_id)
 );
 
+
+
+CREATE TABLE `courses` (
+    `course_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `title` varchar(255) NOT NULL,
+    `description` text NOT NULL,
+    `course_image` varchar(225) NOT NULL,
+    `course_type` enum('video','document') NOT NULL,
+    `video_url` varchar(255) DEFAULT NULL,
+    `document_content` text DEFAULT NULL,
+    `price` decimal(10,2) NOT NULL,
+    `category_id` int(11) NOT NULL,
+    `teacher_id` int(11) NOT NULL,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(category_id),
+    FOREIGN KEY (teacher_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE `comments` (
+    `comments_id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `content` VARCHAR(255) NOT NULL,
+    `user_id` INT NOT NULL,
+    `course_id` INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+
 CREATE TABLE tags (
     tag_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE

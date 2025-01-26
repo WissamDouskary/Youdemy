@@ -20,5 +20,3 @@ if(isset($_POST['user_id']) && isset($_POST['action'])){
         exit();
     }
 }
-
-?>
