@@ -71,7 +71,6 @@ class comments {
                 $comment->comUser = $com['username'];
                 $comArr[] = $comment;
             }
-
             return $comArr;
         }
         catch (PDOException $e){
@@ -79,5 +78,4 @@ class comments {
             return [];
         }
     }
-
 }

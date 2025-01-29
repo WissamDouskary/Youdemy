@@ -62,7 +62,7 @@ class Enrollments {
         }
     }
 
-    private function isAlreadyEnrolled($course_id, $student_id) {
+    public static function isAlreadyEnrolled($course_id, $student_id) {
         $db = Dbconnection::getInstance()->getConnection();
 
         try {

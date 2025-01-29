@@ -145,6 +145,7 @@ if($course_id == null){
                 <div class="space-y-6 bg-white rounded-lg border border-gray-200 p-6 mt-6">
                     <!-- Single Comment -->
                         <?php
+                        try{
                         $comms = comments::showComments($course_id);
                         foreach ($comms as $com){
                         ?>
@@ -164,6 +165,10 @@ if($course_id == null){
                             </p>
                         </div>
                     <?php }
+                        }
+                        catch (Exception $e){
+                            throw new Exception('errorrrrr : ' . $e->getMessage());
+                        }
                     ?>
                 </div>
             </div>
