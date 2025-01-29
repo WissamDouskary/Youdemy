@@ -1,6 +1,7 @@
 <?php
 require_once '../classes/cours.php';
 require_once '../classes/Tag.php';
+require_once '../classes/enrollement.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -214,7 +215,11 @@ if (isset($_SESSION['Log'])) {
                         <div class="flex items-center justify-between mt-4">
                             <span class="text-lg font-bold text-purple-600"><?php echo $cour->getprice() ?>$</span>
                             <div>
-                            <a href="../pages/course_firstPreview.php?course_id=<?php echo $cour->getId()?>"><button class="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
+                            <a href="<?php if(Enrollments::isAlreadyEnrolled($cour->getId(), $_SESSION['user_id'])){
+                                echo "../pages/CoursePreview.php?course_id=". $cour->getId() . "";
+                            } else {
+                                echo "../pages/course_firstPreview.php?course_id=" .$cour->getId() ."";
+                            } ?>"><button class="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
                                 View
                             </button></a>
                             <a href="../Handling/enrollHandle.php?course_id=<?php echo $cour->getId()?>"><button class="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
